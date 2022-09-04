@@ -1,0 +1,13 @@
+{
+	"songs": [
+		["Fight-or-flight", "starved", [0, 0, 0]]
+	],
+
+	"storyName": "",
+	"weekBefore": "tutorial",
+	"weekName": "Cancelled Exe",
+	"startUnlocked": true,
+
+	"hideStoryMode": false,
+	"hideFreeplay": false
+}
