@@ -12,7 +12,7 @@ class NoteSplash extends FlxSprite
 	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0) {
 		super(x, y);
 
-		var skin:String = 'noteSplashes';
+		var skin:String = 'BloodSplash';
 		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
 
 		loadAnims(skin);
@@ -26,7 +26,7 @@ class NoteSplash extends FlxSprite
 		alpha = 0.6;
 
 		if(lastNoteType != noteType) {
-			var skin:String = 'noteSplashes';
+			var skin:String = 'BloodSplash';
 			if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
 
 			switch(noteType) {
@@ -36,21 +36,15 @@ class NoteSplash extends FlxSprite
 			lastNoteType = noteType;
 		}
 
-		offset.set(10, 10);
+		offset.set(-45, -70);
 
-		var animNum:Int = FlxG.random.int(1, 2);
-		animation.play('note' + note + '-' + animNum, true);
-		animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
+		animation.play('a', true);
+		animation.curAnim.frameRate = 24;
 	}
 
 	function loadAnims(skin:String) {
 		frames = Paths.getSparrowAtlas(skin);
-		for (i in 1...3) {
-			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
-			animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
-			animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
-			animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
-		}
+		animation.addByPrefix("a", "Squirt", 24, false); //bruh
 	}
 
 	override function update(elapsed:Float) {

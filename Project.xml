@@ -18,7 +18,7 @@
 
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="false" width="1280" height="720" resizable="false"/>
 
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
@@ -69,8 +69,6 @@
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 	<!-- _________________________________ Custom _______________________________ -->
 

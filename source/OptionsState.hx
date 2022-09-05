@@ -725,7 +725,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 		'Hide Song Length',
 		'Flashing Lights',
 		'Camera Zooms',
-		'Icon Boping',
 		'Score Text design',
 		'Note Splashes',
 		'AUDIO',
@@ -924,8 +923,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 						ClientPrefs.optHideHealthBar = !ClientPrefs.optHideHealthBar;
 					case 'Camera movement on note press':
 						ClientPrefs.cameraMovOnNoteP = !ClientPrefs.cameraMovOnNoteP;
-					case 'Icon Boping':
-						ClientPrefs.iconBoping = !ClientPrefs.iconBoping;
 				}
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				reloadValues();
@@ -1148,8 +1145,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 						daValue = ClientPrefs.optHideHealthBar;
 					case 'Camera movement on note press':
 						daValue = ClientPrefs.cameraMovOnNoteP;
-					case 'Icon Boping':
-						daValue = ClientPrefs.iconBoping;
 				}
 				checkbox.daValue = daValue;
 			}

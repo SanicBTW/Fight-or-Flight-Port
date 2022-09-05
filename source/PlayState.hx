@@ -318,7 +318,7 @@ class PlayState extends MusicBeatState
 
 		dad = new Character(0, 0, SONG.player2);
 		dad.screenCenter();
-		dad.x += 340;
+		dad.x += 300;
 		dad.y += 110;
 		dad.scale.set(1, 1);
 		dadGroup.add(dad);
@@ -375,9 +375,9 @@ class PlayState extends MusicBeatState
 		generateSong(SONG.song);
 
 		camFollow = new FlxPoint();
-		camFollowPos = new FlxObject(0, 0, 1, 1);
+		camFollowPos = new FlxObject(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y, 1, 1);
 
-		snapCamFollowToPos(0, 0);
+		snapCamFollowToPos(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 		if (prevCamFollow != null)
 		{
 			camFollow = prevCamFollow;
@@ -1182,7 +1182,7 @@ class PlayState extends MusicBeatState
 		{
 			//make an update that modifies the method of increasing fear
 			if(starvedFear <= 0) starvedFear = 0;
-			starvedFear += 0.450 * elapsed;
+			starvedFear += 0.475 * elapsed;
 
 			if(Math.round(starvedFear) == 100){
 				starvedFear = 0;
@@ -1208,7 +1208,13 @@ class PlayState extends MusicBeatState
 		if (controls.RESET && !inCutscene && !endingSong)
 		{
 			health = 0;
+			starvedFear = 100;
 			trace("RESET = True");
+		}
+
+		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !endingSong && !isCameraOnForcedPos)
+		{
+			moveCameraSection(Std.int(curStep / 16));
 		}
 
 		var roundedSpeed:Float = FlxMath.roundDecimal(SONG.speed, 2);
@@ -2172,7 +2178,7 @@ class PlayState extends MusicBeatState
 			if(!note.isSustainNote)
 			{
 				health += 0.023;
-				starvedFear -= 0.025;
+				starvedFear -= 0.030;
 			}
 
 			if(!note.noAnimation)
@@ -2268,7 +2274,7 @@ class PlayState extends MusicBeatState
 
 			if(note.gfNote) { char = gf; }
 
-			if(starvedDrop == true){ health -= 0.023; }
+			if(starvedDrop == true){ health -= 0.23; }
 
 			if(char != null)
 			{
@@ -2337,7 +2343,6 @@ class PlayState extends MusicBeatState
 		{
 			switch(curStep)
 			{
-				//case 1184:
 				case 1182:
 					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
@@ -2420,12 +2425,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		//?
-		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !endingSong && !isCameraOnForcedPos)
-		{
-			moveCameraSection(Std.int(curStep / 16));
-		}
-
 		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 4 == 0)
 		{
 			FlxG.camera.zoom += 0.015;
@@ -2440,30 +2439,6 @@ class PlayState extends MusicBeatState
 
 		if (gf != null && curBeat % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && !gf.stunned && gf.animation.curAnim.name != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 		{
-			//taken from the pe-0.4.2 android thingy
-			if (ClientPrefs.iconBoping) {
-				if (curBeat % gfSpeed == 0) { 
-					curBeat % (gfSpeed * 2) == 0 ? {
-						iconP1.scale.set(1.1, 0.8);
-						iconP2.scale.set(1.1, 1.3);
-	
-						FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-						FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-					} : {
-						iconP1.scale.set(1.1, 1.3);
-						iconP2.scale.set(1.1, 0.8);
-	
-						FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-						FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-					}
-	
-					FlxTween.tween(iconP1, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-					FlxTween.tween(iconP2, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-	
-					iconP1.updateHitbox();
-					iconP2.updateHitbox();
-					}
-			}
 			gf.dance();
 		}
 		if (curBeat % boyfriend.danceEveryNumBeats == 0 && boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.stunned)
@@ -2519,7 +2494,7 @@ class PlayState extends MusicBeatState
 		else if (songMisses >= 10) ratingFC = "Clear";
 	}
 
-	var mult = 5;
+	var mult = 15;
 	function cameraShit(animToPlay, isDad)
 	{
 		switch(animToPlay)
