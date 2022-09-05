@@ -197,6 +197,7 @@ class PlayState extends MusicBeatState
     var lightBG:FlxSprite;
     var sonicDead:FlxSprite;
     var towerBG:FlxSprite;
+	var starvedDrop:Bool = false;
 
 	override public function create()
 	{
@@ -376,7 +377,7 @@ class PlayState extends MusicBeatState
 		camFollow = new FlxPoint();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 
-		snapCamFollowToPos(0, 400);
+		snapCamFollowToPos(0, 0);
 		if (prevCamFollow != null)
 		{
 			camFollow = prevCamFollow;
@@ -1179,7 +1180,9 @@ class PlayState extends MusicBeatState
 
 		if(startedSong && !endingSong)
 		{
-			starvedFear += 0.275 * elapsed;
+			//make an update that modifies the method of increasing fear
+			if(starvedFear <= 0) starvedFear = 0;
+			starvedFear += 0.450 * elapsed;
 
 			if(Math.round(starvedFear) == 100){
 				starvedFear = 0;
@@ -1414,7 +1417,7 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(dad.getScreenPosition().x, dad.getScreenPosition().y, camFollowPos.x, camFollowPos.y));
+			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, camFollowPos.x, camFollowPos.y));
 			
 			#if desktop
 			// Game Over doesn't get his own variable because it's only used here
@@ -2091,6 +2094,7 @@ class PlayState extends MusicBeatState
 				default:
 					combo = 0;
 					health -= 0.04;
+					starvedFear += 0.500;
 					if(!practiceMode) songScore -= 10;
 					if(!endingSong){
 						songMisses++;
@@ -2122,6 +2126,7 @@ class PlayState extends MusicBeatState
 		if (!boyfriend.stunned)
 		{
 			health -= 0.05;
+			starvedFear += 0.500;
 			combo = 0;
 
 			if(!practiceMode) songScore -= 10;
@@ -2164,7 +2169,11 @@ class PlayState extends MusicBeatState
 				if(combo > 9999) combo = 9999;
 			}
 
-			health += 0.023;
+			if(!note.isSustainNote)
+			{
+				health += 0.023;
+				starvedFear -= 0.025;
+			}
 
 			if(!note.noAnimation)
 			{
@@ -2259,6 +2268,8 @@ class PlayState extends MusicBeatState
 
 			if(note.gfNote) { char = gf; }
 
+			if(starvedDrop == true){ health -= 0.023; }
+
 			if(char != null)
 			{
 				cameraShit(singAnims[Std.int(Math.abs(note.noteData)) % 4], true);
@@ -2327,7 +2338,7 @@ class PlayState extends MusicBeatState
 			switch(curStep)
 			{
 				//case 1184:
-				case 1180:
+				case 1182:
 					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
@@ -2339,7 +2350,8 @@ class PlayState extends MusicBeatState
 					dad.colorTween = FlxTween.color(dad, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-				case 1438:
+					starvedDrop = true;
+				case 1436:
 					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
@@ -2351,7 +2363,8 @@ class PlayState extends MusicBeatState
 					dad.colorTween = FlxTween.color(dad, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-				case 1470:
+					starvedDrop = false;
+				case 1471:
 					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
@@ -2363,7 +2376,8 @@ class PlayState extends MusicBeatState
 					dad.colorTween = FlxTween.color(dad, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-				case 1980:
+					starvedDrop = true;
+				case 1981:
 					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
@@ -2375,6 +2389,7 @@ class PlayState extends MusicBeatState
 					dad.colorTween = FlxTween.color(dad, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
+					starvedDrop = false;
 			}
 		}
 
