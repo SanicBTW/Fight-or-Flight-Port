@@ -18,7 +18,7 @@
 
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
 
-	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="true"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" width="1280" height="720" resizable="false"/>
 
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
@@ -53,7 +53,6 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxedev set='webgl' />
 
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />

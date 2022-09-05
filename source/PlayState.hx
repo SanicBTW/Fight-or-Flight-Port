@@ -249,7 +249,7 @@ class PlayState extends MusicBeatState
 
 		switch(SONG.song.toLowerCase())
 		{
-			case "fight or flight":
+			case "fight or flight" | 'lucha or funa':
 				curStage = "starved";
 
 				defaultCamZoom = 0.85;
@@ -320,7 +320,6 @@ class PlayState extends MusicBeatState
 		dad.screenCenter();
 		dad.x += 300;
 		dad.y += 110;
-		dad.scale.set(1, 1);
 		dadGroup.add(dad);
 
 		boyfriend = new Boyfriend(0, 400, SONG.player1);
@@ -2494,7 +2493,7 @@ class PlayState extends MusicBeatState
 		else if (songMisses >= 10) ratingFC = "Clear";
 	}
 
-	var mult = 15;
+	var mult = 30;
 	function cameraShit(animToPlay, isDad)
 	{
 		switch(animToPlay)
