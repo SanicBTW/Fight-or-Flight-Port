@@ -122,11 +122,8 @@ class PlayState extends MusicBeatState
 	private var curSong:String = "";
 
 	private var gfSpeed:Int = 1;
-	private var health:Float = 1;
 	private var combo:Int = 0;
 
-	private var healthBarBG:AttachedSprite;
-	public var healthBar:FlxBar;
 	var songPercent:Float = 0;
 
 	private var timeBarBG:FlxSprite;
@@ -144,8 +141,6 @@ class PlayState extends MusicBeatState
 	var botplaySine:Float = 0;
 	var botplayTxt:FlxText;
 
-	public var iconP1:HealthIcon;
-	public var iconP2:HealthIcon;
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
@@ -198,6 +193,7 @@ class PlayState extends MusicBeatState
     var sonicDead:FlxSprite;
     var towerBG:FlxSprite;
 	var starvedDrop:Bool = false;
+	var subtitles:Subtitle;
 
 	override public function create()
 	{
@@ -254,6 +250,7 @@ class PlayState extends MusicBeatState
 
 				defaultCamZoom = 0.85;
 				ClientPrefs.middleScroll = true;
+				ClientPrefs.cameraMovOnNoteP = true;
 
 				cityBG = new FlxSprite(-117, -65, Paths.image('starved/city'));
 				cityBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
@@ -331,8 +328,8 @@ class PlayState extends MusicBeatState
 
 		Conductor.songPosition = -5000;
 
-		strumLine = new FlxSprite(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
-		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
+		strumLine = new FlxSprite(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 5).makeGraphic(FlxG.width, 10);
+		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 115;
 		strumLine.scrollFactor.set();
 
 		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 20, 400, "", 32);
@@ -341,7 +338,8 @@ class PlayState extends MusicBeatState
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2;
 		timeTxt.visible = !ClientPrefs.hideTime;
-		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 45;
+		timeTxt.y = FlxG.height - 95;
+		if(ClientPrefs.downScroll) timeTxt.y = 5;
 
 		timeBarBG = new FlxSprite(timeTxt.x, timeTxt.y + (timeTxt.height / 4)).loadGraphic(Paths.image('timeBar'));
 		timeBarBG.scrollFactor.set();
@@ -353,7 +351,7 @@ class PlayState extends MusicBeatState
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 			'songPercent', 0, 1);
 		timeBar.scrollFactor.set();
-		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
+		timeBar.createFilledBar(FlxColor.RED, FlxColor.BLACK);
 		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.alpha = 0;
 		timeBar.visible = !ClientPrefs.hideTime;
@@ -397,48 +395,15 @@ class PlayState extends MusicBeatState
 
 		FlxG.fixedTimestep = false;
 
-		healthBarBG = new AttachedSprite('healthBar');
-		healthBarBG.y = FlxG.height * 0.89;
-		healthBarBG.screenCenter(X);
-		healthBarBG.scrollFactor.set();
-		healthBarBG.visible = !ClientPrefs.hideHud;
-		healthBarBG.xAdd = -4;
-		healthBarBG.yAdd = -4;
-		if(!ClientPrefs.optHideHealthBar){
-			add(healthBarBG);
-		}
-		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
-
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
-		healthBar.scrollFactor.set();
-		healthBar.visible = !ClientPrefs.hideHud;
-		if(!ClientPrefs.optHideHealthBar){
-			add(healthBar);
-		}
-		healthBarBG.sprTracker = healthBar;
-
-		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
-		iconP1.y = healthBar.y - (iconP1.height / 2);
-		iconP1.visible = !ClientPrefs.hideHud;
-		if(!ClientPrefs.optHideHealthBar){
-			add(iconP1);
-		}
-
-		iconP2 = new HealthIcon(dad.healthIcon, false);
-		iconP2.y = healthBar.y - (iconP2.height / 2);
-		iconP2.visible = !ClientPrefs.hideHud;
-		if(!ClientPrefs.optHideHealthBar){
-			add(iconP2);
-			reloadHealthBarColors();
-		}
-
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		scoreTxt = new FlxText(0, (FlxG.height - 45) - 5, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
+		if(ClientPrefs.downScroll){
+			scoreTxt.y = 45;
+		}
 
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -477,13 +442,18 @@ class PlayState extends MusicBeatState
 		fearBar.updateHitbox();
 		add(fearBar);
 
+		if(SONG.song.toLowerCase() == "lucha or funa")
+		{
+			subtitles = new Subtitle();
+			subtitles.screenCenter();
+			subtitles.x -= 420;
+			subtitles.scrollFactor.set();
+			add(subtitles);
+		}
+
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
-		healthBar.cameras = [camHUD];
-		healthBarBG.cameras = [camHUD];
-		iconP1.cameras = [camHUD];
-		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
@@ -492,6 +462,11 @@ class PlayState extends MusicBeatState
 		fearBarMain.cameras = [camHUD];
 		fearBarBG.cameras = [camHUD];
 		fearBar.cameras = [camHUD];
+
+		if(SONG.song.toLowerCase() == "lucha or funa")
+		{
+			subtitles.cameras = [camHUD];
+		}
 
 		#if android
 		addAndroidControls();
@@ -526,7 +501,7 @@ class PlayState extends MusicBeatState
 		
 		#if desktop
 		// Updating Discord Rich Presence.
-		DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+		DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved");
 		#end
 
 		super.create();
@@ -534,14 +509,12 @@ class PlayState extends MusicBeatState
 		System.gc();
 
 		CustomFadeTransition.nextCamera = camOther;
+
+		lime.app.Application.current.window.title = displaySongName;
+
+		beatHit(); //lmfao easiest fix of my life
 	}
 	
-	public function reloadHealthBarColors() {
-		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
-			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
-		healthBar.updateBar();
-	}
-
 	public function addCharacterToList(newCharacter:String, type:Int) {
 		switch(type) {
 			case 0:
@@ -722,7 +695,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
-		DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
+		DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved", true, songLength);
 		#end
 
 		startedSong = true;
@@ -999,11 +972,11 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer.finished)
 			{
-				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
+				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved", true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
 			}
 			else
 			{
-				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved");
 			}
 			#end
 		}
@@ -1014,15 +987,15 @@ class PlayState extends MusicBeatState
 	override public function onFocus():Void
 	{
 		#if desktop
-		if (health > 0 && !paused)
+		if (starvedFear > 0 && !paused)
 		{
 			if (Conductor.songPosition > 0.0)
 			{
-				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
+				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved", true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
 			}
 			else
 			{
-				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				DiscordClient.changePresence(detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved");
 			}
 		}
 		#end
@@ -1033,9 +1006,9 @@ class PlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		#if desktop
-		if (health > 0 && !paused)
+		if (starvedFear > 0 && !paused)
 		{
-			DiscordClient.changePresence(detailsPausedText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+			DiscordClient.changePresence(detailsPausedText, displaySongName + " (" + storyDifficultyText + ")", "starved");
 		}
 		#end
 
@@ -1074,7 +1047,7 @@ class PlayState extends MusicBeatState
 		if(ratingString == 'N/A') {
 			scoreTxt.text = 'Sacrifices: ' + songMisses + ' | Accuracy: N/A';
 		} else {
-			scoreTxt.text = 'Sacrifices: ' + songMisses + ' | Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
+			scoreTxt.text = 'Sacrifices: ' + songMisses + ' | Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% [' + ratingFC + ']';
 		}
 
 		if(cpuControlled) {
@@ -1085,45 +1058,26 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ENTER #if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
-			persistentUpdate = false;
-			persistentDraw = true;
-			paused = true;
-			if(FlxG.sound.music != null) {
-				FlxG.sound.music.pause();
-				vocals.pause();
+			if(!FlxG.random.bool(0.1))
+			{
+				persistentUpdate = false;
+				persistentDraw = true;
+				paused = true;
+				if(FlxG.sound.music != null) {
+					FlxG.sound.music.pause();
+					vocals.pause();
+				}
+				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			
+				#if desktop
+				DiscordClient.changePresence(detailsPausedText, displaySongName + " (" + storyDifficultyText + ")", "starved");
+				#end
 			}
-			openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-		
-			#if desktop
-			DiscordClient.changePresence(detailsPausedText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-			#end
+			else
+			{
+				trace("Bromita :P");
+			}
 		}
-
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
-
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP2.scale.set(mult, mult);
-		iconP2.updateHitbox();
-
-		var iconOffset:Int = 26;
-
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
-
-		if (health >= 2)
-			health = 2;
-
-		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
-		else
-			iconP1.animation.curAnim.curFrame = 0;
-
-		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
-		else
-			iconP2.animation.curAnim.curFrame = 0;
 
 		if (startingSong)
 		{
@@ -1182,38 +1136,15 @@ class PlayState extends MusicBeatState
 			//make an update that modifies the method of increasing fear
 			if(starvedFear <= 0) starvedFear = 0;
 			starvedFear += 0.475 * elapsed;
-
-			if(Math.round(starvedFear) == 100){
-				starvedFear = 0;
-				boyfriend.stunned = true;
-				deathCounter++;
-
-				persistentUpdate = false;
-				persistentDraw = false;
-				paused = true;
-
-				vocals.stop();
-				FlxG.sound.music.stop();
-
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, camFollowPos.x, camFollowPos.y));
-
-				#if desktop
-				DiscordClient.changePresence("Game Over - " + detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-				#end
-			}
 		}
+
+		doDeathCheck();
 
 		// RESET = Quick Game Over Screen
 		if (controls.RESET && !inCutscene && !endingSong)
 		{
-			health = 0;
 			starvedFear = 100;
 			trace("RESET = True");
-		}
-
-		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !endingSong && !isCameraOnForcedPos)
-		{
-			moveCameraSection(Std.int(curStep / 16));
 		}
 
 		var roundedSpeed:Float = FlxMath.roundDecimal(SONG.speed, 2);
@@ -1408,9 +1339,9 @@ class PlayState extends MusicBeatState
 
 
 	public var isDead:Bool = false;
-	function doDeathCheck(?skipHealthCheck:Bool = false)
+	function doDeathCheck(?skipFearCheck:Bool = false)
 	{
-		if((skipHealthCheck || health <= 0) && !practiceMode && !isDead) 
+		if((skipFearCheck || Math.round(starvedFear) == 100) && !practiceMode && !isDead) 
 		{
 			boyfriend.stunned = true;
 			deathCounter++;
@@ -1426,7 +1357,7 @@ class PlayState extends MusicBeatState
 			
 			#if desktop
 			// Game Over doesn't get his own variable because it's only used here
-			DiscordClient.changePresence("Game Over - " + detailsText, displaySongName + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+			DiscordClient.changePresence("Game Over - " + detailsText, displaySongName + " (" + storyDifficultyText + ")", "starved");
 			#end
 			isDead = true;
 			return true;
@@ -1541,7 +1472,6 @@ class PlayState extends MusicBeatState
 							boyfriend.visible = false;
 							boyfriend = boyfriendMap.get(value2);
 							boyfriend.visible = true;
-							iconP1.changeIcon(boyfriend.healthIcon);
 						}
 
 					case 1:
@@ -1561,7 +1491,6 @@ class PlayState extends MusicBeatState
 								gf.visible = false;
 							}
 							dad.visible = true;
-							iconP2.changeIcon(dad.healthIcon);
 						}
 
 					case 2:
@@ -1585,6 +1514,10 @@ class PlayState extends MusicBeatState
 		{
 			moveCamera(true);
 			defaultCamZoom = 1;
+			for(i in 0...playerStrums.length)
+			{
+				FlxTween.tween(playerStrums.members[i], {alpha: 0.5}, 0.1, { ease: FlxEase.linear});
+			}
 			campointX = camFollow.x;
 			campointY = camFollow.y;
 			bfturn = false;
@@ -1594,6 +1527,10 @@ class PlayState extends MusicBeatState
 		{
 			moveCamera(false);
 			defaultCamZoom = 0.85;
+			for(i in 0...playerStrums.length)
+			{
+				FlxTween.tween(playerStrums.members[i], {alpha: 1}, 0.1, { ease: FlxEase.linear});
+			}
 			campointX = camFollow.x;
 			campointY = camFollow.y;
 			bfturn = true;
@@ -1671,6 +1608,7 @@ class PlayState extends MusicBeatState
 		usedPractice = false;
 		changedDifficulty = false;
 		cpuControlled = false;
+		lime.app.Application.current.window.title = "Fight or Flight";
 	}
 
 	private function KillNotes() {
@@ -2098,7 +2036,6 @@ class PlayState extends MusicBeatState
 			{
 				default:
 					combo = 0;
-					health -= 0.04;
 					starvedFear += 0.500;
 					if(!practiceMode) songScore -= 10;
 					if(!endingSong){
@@ -2130,7 +2067,6 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
-			health -= 0.05;
 			starvedFear += 0.500;
 			combo = 0;
 
@@ -2176,7 +2112,6 @@ class PlayState extends MusicBeatState
 
 			if(!note.isSustainNote)
 			{
-				health += 0.023;
 				starvedFear -= 0.030;
 			}
 
@@ -2273,8 +2208,6 @@ class PlayState extends MusicBeatState
 
 			if(note.gfNote) { char = gf; }
 
-			if(starvedDrop == true){ health -= 0.23; }
-
 			if(char != null)
 			{
 				cameraShit(singAnims[Std.int(Math.abs(note.noteData)) % 4], true);
@@ -2340,14 +2273,246 @@ class PlayState extends MusicBeatState
 
 		if(curStage == "starved")
 		{
+			if(SONG.song.toLowerCase() == "lucha or funa")
+			{
+				//lyrics oficiales del video: https://www.youtube.com/watch?v=Z1h4DWllk4k
+				switch(curStep)
+				{
+					case 1:
+						subtitles.show();
+						subtitles.changeChar("ecuadorean");
+						subtitles.changeSubtitle("Nya");
+					case 5:
+						subtitles.changeSubtitle("Ecuadorean GOD");
+					case 17:
+						subtitles.changeSubtitle("Nya");
+					case 19:
+						subtitles.changeSubtitle("Nya x2");
+					case 21:
+						subtitles.changeSubtitle("Redbromer ZZZ");
+					case 32:
+						subtitles.changeSubtitle("Nya");
+					case 35:
+						subtitles.hide();
+					case 83:
+						subtitles.show();
+					case 84:
+						subtitles.changeSubtitle("Nya");
+					case 86:
+						subtitles.hide();
+					case 119:
+						subtitles.show();
+					case 120:
+						subtitles.changeSubtitle("Lemon Demon");
+					case 128:
+						subtitles.hide();
+					case 179:
+						subtitles.show();
+					case 180:
+						subtitles.changeSubtitle("Oli amor te amo <3");
+					case 190:
+						subtitles.hide();
+					case 354:
+						subtitles.show();
+					case 355:
+						subtitles.changeSubtitle("Busqueen tweets");
+					case 363:
+						subtitles.changeSubtitle("de este pana y");
+					case 368:
+						subtitles.changeSubtitle("pasenmelos");
+					//dumb ass
+					case 374:
+						subtitles.hide();
+					case 375:
+						subtitles.show();
+					case 376:
+						subtitles.changeSubtitle("Le");
+					case 377:
+						subtitles.changeSubtitle("Le x2");
+					case 379:
+						subtitles.changeSubtitle("Lemon Demon");
+					case 384:
+						subtitles.hide();
+					case 458:
+						subtitles.changeChar("derkerbluer");
+						subtitles.show();
+					case 460:
+						subtitles.changeSubtitle("¿Se acuerdan");
+					case 468:
+						subtitles.changeSubtitle("de ");
+					case 470:
+						subtitles.changeSubtitle("de x2");
+					case 472:
+						subtitles.changeSubtitle("de x3");
+					case 473:
+						subtitles.changeSubtitle("de Ecuadorean?");
+					case 480:
+						subtitles.hide();
+					case 543:
+						subtitles.changeChar("ecuadorean");
+						subtitles.show();
+					case 545:
+						subtitles.changeSubtitle("Pinches idiotas");
+					case 556:
+						subtitles.changeSubtitle("cabron...");
+					case 560:
+						subtitles.hide();
+					case 658:
+						subtitles.changeChar("candel");
+						subtitles.show();
+					case 657:
+						subtitles.changeSubtitle("Yo soy...");
+					case 665:
+						subtitles.changeSubtitle("Candel!");
+					case 672:
+						subtitles.hide();
+					case 873:
+						subtitles.changeChar("ecuadorean");
+						subtitles.show();
+					case 875:
+						subtitles.changeSubtitle("¡Cállate el");
+					case 880:
+						subtitles.changeSubtitle("hocico");
+					case 884:
+						subtitles.changeSubtitle("conchetumadre");
+					case 892:
+						subtitles.changeSubtitle("un rato!");
+					case 895:
+						subtitles.hide();
+					case 978:
+						subtitles.changeChar("donkamaron");
+						subtitles.show();
+					case 980:
+						subtitles.changeSubtitle("En...");
+					case 983:
+						subtitles.changeSubtitle("Don");
+					case 987:
+						subtitles.changeSubtitle("Kamarón");
+					case 993:
+						subtitles.hide();
+					case 1166:
+						subtitles.changeChar("ecuadorean");
+						subtitles.show();
+					case 1168:
+						subtitles.changeSubtitle("Jajaja...");
+					case 1183:
+						subtitles.changeSubtitle("El día de hoy");
+					case 1190:
+						subtitles.changeSubtitle("continuamos con la saga");
+					case 1200:
+						subtitles.changeSubtitle("de videos del Redbromer");
+					case 1210:
+						subtitles.changeSubtitle("Webón");
+					case 1215:
+						subtitles.changeSubtitle("¿Por qué no me encaras a mi?");
+					case 1230:
+						subtitles.changeSubtitle("Nya");
+					case 1240:
+						subtitles.changeSubtitle("Nya x2");
+					case 1244:
+						subtitles.changeSubtitle("Nya x3");
+					case 1247:
+						subtitles.changeChar("redbromer");
+					case 1248:
+						subtitles.changeSubtitle("Es más o menos");
+					case 1255:
+						subtitles.changeSubtitle("como esa polémica");
+					case 1265:
+						subtitles.changeSubtitle("que tuve con el pendejo");
+					case 1280:
+						subtitles.changeSubtitle("que le hace la voz");
+					case 1288:
+						subtitles.changeSubtitle("a Lemon Demon");
+					case 1294:
+						subtitles.changeChar("ecuadorean");
+					case 1295:
+						subtitles.changeSubtitle("Nya");
+					case 1303:
+						subtitles.changeSubtitle("Nya x2");
+					case 1307:
+						subtitles.changeSubtitle("Nya x3");
+					case 1312:
+						subtitles.hide();
+					case 1442:
+						subtitles.show();
+					case 1443:
+						subtitles.changeSubtitle("Pinches idiotas cabrón...");
+					case 1459:
+						subtitles.hide();
+					case 1549:
+						subtitles.show();
+					case 1550:
+						subtitles.changeSubtitle("El pendejo que");
+					case 1558:
+						subtitles.changeSubtitle("le hace la voz");
+					case 1562:
+						subtitles.changeSubtitle("a Lemon Demon...");
+					case 1568:
+						subtitles.hide();
+					case 1711:
+						subtitles.show();
+					case 1712:
+						subtitles.changeSubtitle("Jajaja...");
+					case 1727:
+						subtitles.changeChar("sanco");
+						subtitles.changeSubtitle("Solo pondré los nya sorry");
+						trace("Aqui iria lo mismo que antes pero me dio paja jajaja, solo pondre los nya");
+					case 1750:
+						subtitles.hide();
+					case 1773:
+						subtitles.show();
+					case 1774:
+						subtitles.changeChar("ecuadorean");
+					case 1775:
+						subtitles.changeSubtitle("Nya");
+					case 1783:
+						subtitles.changeSubtitle("Nya x2");
+					case 1787:
+						subtitles.changeSubtitle("Nya x3");
+					case 1792:
+						subtitles.hide();
+					case 2015:
+						subtitles.show();
+					case 2016:
+						subtitles.changeSubtitle("Nya");
+					case 2018:
+						subtitles.changeSubtitle("Nya x2");
+					case 2021:
+						subtitles.changeSubtitle("Ecuadorean GOD");
+					case 2030:
+						subtitles.changeSubtitle("Nya");
+					case 2033:
+						subtitles.changeSubtitle("Nya x2");
+					case 2036:
+						subtitles.changeSubtitle("RedBromer ZZZ");
+					case 2047:
+						subtitles.changeSubtitle("Nya");
+					case 2048:
+						subtitles.hide();
+					case 2098:
+						subtitles.show();
+					case 2099:
+						subtitles.changeSubtitle("Nya x2");
+					case 2102:
+						subtitles.hide();
+					case 2119:
+						subtitles.show();
+					case 2120:
+						trace("se me escapo un lemon demon por aqui pero na");
+						subtitles.changeChar("sanco");
+						subtitles.changeSubtitle("Gracias por jugar!");
+					case 2140:
+						subtitles.hide();
+				}
+			}
 			switch(curStep)
 			{
 				case 1182:
 					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(fofStage, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
+					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
 					boyfriend.colorTween = FlxTween.color(boyfriend, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
@@ -2358,9 +2523,9 @@ class PlayState extends MusicBeatState
 				case 1436:
 					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(fofStage, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
+					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
 					boyfriend.colorTween = FlxTween.color(boyfriend, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
@@ -2371,9 +2536,9 @@ class PlayState extends MusicBeatState
 				case 1471:
 					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(fofStage, {alpha: 0}, 1, {ease: FlxEase.quadInOut});
+					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
 					boyfriend.colorTween = FlxTween.color(boyfriend, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
@@ -2384,9 +2549,9 @@ class PlayState extends MusicBeatState
 				case 1981:
 					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
-					FlxTween.tween(fofStage, {alpha: 1}, 1, {ease: FlxEase.quadInOut});
+					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
 					boyfriend.colorTween = FlxTween.color(boyfriend, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
@@ -2424,17 +2589,16 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !endingSong && !isCameraOnForcedPos)
+		{
+			moveCameraSection(Std.int(curStep / 16));
+		}
+
 		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 4 == 0)
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
 		}
-
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
 
 		if (gf != null && curBeat % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && !gf.stunned && gf.animation.curAnim.name != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 		{
@@ -2493,7 +2657,7 @@ class PlayState extends MusicBeatState
 		else if (songMisses >= 10) ratingFC = "Clear";
 	}
 
-	var mult = 30;
+	var mult = 5;
 	function cameraShit(animToPlay, isDad)
 	{
 		switch(animToPlay)

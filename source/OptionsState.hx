@@ -712,9 +712,7 @@ class PreferencesSubstate extends MusicBeatSubstate
 		#end
 		'GAMEPLAY',
 		'Downscroll',
-		'Middlescroll',
 		'Ghost Tapping',
-		'Camera movement on note press',
 		'Input',
 		'VISUALS AND UI',
 		'FPS Counter',
@@ -723,7 +721,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 		'Hide Song Length',
 		'Flashing Lights',
 		'Camera Zooms',
-		'Score Text design',
 		'Note Splashes',
 		'AUDIO',
 		'Pause music',
@@ -732,7 +729,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 		'OPTIMIZATION',
 		//add again the only notes option
 		'Score Text Zoom on Hit',
-		'Hide Health Bar',
 	];
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -951,7 +947,6 @@ class PreferencesSubstate extends MusicBeatSubstate
 						else if(controls.UI_RIGHT_P)
 							changeState(1, options);
 						ClientPrefs.pauseMusic = options[index];
-					//fix floats
 					case 'Miss Volume':
 						ClientPrefs.missVolume += floatAdd;
 						if(ClientPrefs.missVolume < 0) ClientPrefs.missVolume = 0;
