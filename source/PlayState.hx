@@ -243,6 +243,8 @@ class PlayState extends MusicBeatState
 		detailsPausedText = "Paused - " + detailsText;
 		#end
 
+		GameOverSubstate.resetVariables();
+
 		switch(SONG.song.toLowerCase())
 		{
 			case "fight or flight" | 'lucha or funa':
