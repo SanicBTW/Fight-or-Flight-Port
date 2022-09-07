@@ -194,6 +194,9 @@ class PlayState extends MusicBeatState
     var towerBG:FlxSprite;
 	var starvedDrop:Bool = false;
 	var subtitles:Subtitle;
+	var startCircle:FlxSprite;
+	var startText:FlxSprite;
+	var blackFuck:FlxSprite;
 
 	override public function create()
 	{
@@ -242,6 +245,10 @@ class PlayState extends MusicBeatState
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + detailsText;
 		#end
+
+		blackFuck = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+		startCircle = new FlxSprite();
+		startText = new FlxSprite();
 
 		GameOverSubstate.resetVariables();
 
@@ -464,6 +471,9 @@ class PlayState extends MusicBeatState
 		fearBarMain.cameras = [camHUD];
 		fearBarBG.cameras = [camHUD];
 		fearBar.cameras = [camHUD];
+		startCircle.cameras = [camHUD];
+		startText.cameras = [camHUD];
+		blackFuck.cameras = [camHUD];
 
 		if(SONG.song.toLowerCase() == "lucha or funa")
 		{
@@ -479,7 +489,44 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 		updateTime = true;
 
-		startCountdown();
+		if(curStage == "starved") //dumb ass
+		{
+			startCountdown();
+			add(blackFuck);
+			startCircle.loadGraphic(Paths.image('Circle-fight-or-flight'));
+			startCircle.screenCenter();
+			startCircle.scale.set(1.5, 1.5);
+			startCircle.x += 777;
+			add(startCircle);
+			startText.loadGraphic(Paths.image("Text-fight-or-flight"));
+			startText.screenCenter();
+			startText.scale.set(1.5, 1.5);
+			startText.x -= 1200;
+			add(startText);
+
+			new FlxTimer().start(0.6, function(tmr:FlxTimer)
+			{
+				FlxTween.tween(startCircle, {x: 250}, 0.5);
+				FlxTween.tween(startText, {x: 250}, 0.5);
+			});
+
+			new FlxTimer().start(1.9, function(tmr:FlxTimer)
+			{
+				//we tryna clean memory ig
+				FlxTween.tween(startCircle, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+				{
+					remove(startCircle);
+				}});
+				FlxTween.tween(startText, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+				{
+					remove(startText);
+				}});
+				FlxTween.tween(blackFuck, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+				{
+					remove(blackFuck);
+				}});
+			});
+		}
 		RecalculateRating();
 
 		//precache if vol higher than 0
@@ -516,7 +563,7 @@ class PlayState extends MusicBeatState
 
 		beatHit(); //lmfao easiest fix of my life
 	}
-	
+
 	public function addCharacterToList(newCharacter:String, type:Int) {
 		switch(type) {
 			case 0:
@@ -596,68 +643,6 @@ class PlayState extends MusicBeatState
 				dad.dance();
 			}
 
-			var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
-			introAssets.set('default', ['ready', 'set', 'go']);
-
-			var introAlts:Array<String> = introAssets.get('default');
-			var antialias:Bool = ClientPrefs.globalAntialiasing;
-			var altSuffix:String = "";
-
-			switch (swagCounter)
-			{
-				case 0:
-					FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
-				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
-					ready.scrollFactor.set();
-					ready.updateHitbox();
-
-					ready.screenCenter();
-					ready.antialiasing = antialias;
-					add(ready);
-					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							ready.destroy();
-						}
-					});
-					FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
-				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
-					set.scrollFactor.set();
-
-					set.screenCenter();
-					set.antialiasing = antialias;
-					add(set);
-					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							set.destroy();
-						}
-					});
-					FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
-				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
-					go.scrollFactor.set();
-
-					go.updateHitbox();
-
-					go.screenCenter();
-					go.antialiasing = antialias;
-					add(go);
-					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							go.destroy();
-						}
-					});
-					FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
-				case 4:
-			}
-
 			if (generatedMusic)
 			{
 				notes.sort(FlxSort.byY, ClientPrefs.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
@@ -701,6 +686,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		startedSong = true;
+		canPause = true;
 	}
 
 	private function generateSong(dataPath:String):Void
@@ -1031,7 +1017,7 @@ class PlayState extends MusicBeatState
 
 	private var paused:Bool = false;
 	var startedCountdown:Bool = false;
-	var canPause:Bool = true;
+	var canPause:Bool = false;
 
 	override public function update(elapsed:Float)
 	{
@@ -2659,7 +2645,7 @@ class PlayState extends MusicBeatState
 		else if (songMisses >= 10) ratingFC = "Clear";
 	}
 
-	var mult = 5;
+	var mult = 10;
 	function cameraShit(animToPlay, isDad)
 	{
 		switch(animToPlay)
