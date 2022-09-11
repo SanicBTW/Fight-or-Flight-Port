@@ -1,0 +1,10 @@
+dunno what version im in so lets just say uhhhh commit 11
+
+past commits changelog will be added after pushing
+
+now onto the actual changelog sorry
+
+-- COMMIT 11
+Modified NoteSplash offset
+Stage now has a scrollFactor of 0.5, might need some more tweaking
+Reduced mult (from camera movement on note direction) to 5

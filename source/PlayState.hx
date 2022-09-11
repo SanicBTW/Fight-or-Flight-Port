@@ -264,41 +264,41 @@ class PlayState extends MusicBeatState
 				cityBG = new FlxSprite(-117, -65, Paths.image('starved/city'));
 				cityBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				cityBG.scale.set(1.25, 1.25);
-				cityBG.scrollFactor.set();
 				cityBG.antialiasing = ClientPrefs.globalAntialiasing;
 				cityBG.updateHitbox();
+				cityBG.scrollFactor.set(0.5);
 				add(cityBG);
-		
+
 				towerBG = new FlxSprite(-117, -65, Paths.image('starved/towers'));
 				towerBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				towerBG.scale.set(1.25, 1.25);
-				towerBG.scrollFactor.set();
 				towerBG.antialiasing = ClientPrefs.globalAntialiasing;
 				towerBG.updateHitbox();
+				towerBG.scrollFactor.set(0.5);
 				add(towerBG);
-		
+
 				fofStage = new FlxSprite(-117, -65, Paths.image('starved/stage'));
 				fofStage.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				fofStage.scale.set(1.25, 1.25);
-				fofStage.scrollFactor.set();
 				fofStage.antialiasing = ClientPrefs.globalAntialiasing;
 				fofStage.updateHitbox();
+				fofStage.scrollFactor.set(0.5);
 				add(fofStage);
-		
+
 				sonicDead = new FlxSprite(325, 250, Paths.image('starved/sonicisfuckingdead'));
 				sonicDead.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				sonicDead.scale.set(0.5, 0.5);
-				sonicDead.scrollFactor.set();
 				sonicDead.antialiasing = ClientPrefs.globalAntialiasing;
 				sonicDead.updateHitbox();
+				sonicDead.scrollFactor.set(0.5);
 				add(sonicDead);
-		
+
 				lightBG = new FlxSprite(-117, -65, Paths.image('starved/light'));
 				lightBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				lightBG.scale.set(1.25, 1.25);
-				lightBG.scrollFactor.set();
 				lightBG.antialiasing = ClientPrefs.globalAntialiasing;
 				lightBG.updateHitbox();
+				lightBG.scrollFactor.set(0.5);
 				add(lightBG);
 		}
 
@@ -424,6 +424,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		//todo, make a flx sprite group
 		fearBarMain = new FlxSprite(FlxG.width - 100 , FlxG.height * 0.23).loadGraphic(Paths.image("fearbar"));
 		fearBarMain.scrollFactor.set();
 		fearBarMain.visible = true;
@@ -2442,10 +2443,6 @@ class PlayState extends MusicBeatState
 					case 1712:
 						subtitles.changeSubtitle("Jajaja...");
 					case 1727:
-						subtitles.changeChar("sanco");
-						subtitles.changeSubtitle("Solo pondré los nya sorry");
-						trace("Aqui iria lo mismo que antes pero me dio paja jajaja, solo pondre los nya");
-					case 1750:
 						subtitles.hide();
 					case 1773:
 						subtitles.show();
@@ -2645,7 +2642,7 @@ class PlayState extends MusicBeatState
 		else if (songMisses >= 10) ratingFC = "Clear";
 	}
 
-	var mult = 10;
+	var mult = 5;
 	function cameraShit(animToPlay, isDad)
 	{
 		switch(animToPlay)

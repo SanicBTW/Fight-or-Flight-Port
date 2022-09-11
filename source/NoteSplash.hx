@@ -36,7 +36,7 @@ class NoteSplash extends FlxSprite
 			lastNoteType = noteType;
 		}
 
-		offset.set(-45, -70);
+		offset.set(-40, -75);
 
 		animation.play('a', true);
 		animation.curAnim.frameRate = 24;
