@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="ecua.png"><SubTexture name="ecua idle0000" x="1640" y="553" width="248" height="551" frameX="-232" frameY="-66" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0001" x="1640" y="553" width="248" height="551" frameX="-232" frameY="-66" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0002" x="1640" y="553" width="248" height="551" frameX="-232" frameY="-66" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0003" x="1374" y="557" width="250" height="555" frameX="-229" frameY="-64" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0004" x="1374" y="557" width="250" height="555" frameX="-229" frameY="-64" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0005" x="1374" y="557" width="250" height="555" frameX="-229" frameY="-64" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0006" x="1640" y="0" width="250" height="553" frameX="-231" frameY="-65" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua idle0007" x="1640" y="0" width="250" height="553" frameX="-231" frameY="-65" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0000" x="720" y="0" width="352" height="634" frameX="-210" frameY="-9" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0001" x="364" y="0" width="356" height="644" frameX="-206" frameY="-1" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0002" x="0" y="0" width="364" height="645" frameX="-208" frameY="0" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0003" x="0" y="0" width="364" height="645" frameX="-208" frameY="0" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0004" x="0" y="0" width="364" height="645" frameX="-208" frameY="0" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0005" x="364" y="0" width="356" height="644" frameX="-206" frameY="-1" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0006" x="364" y="0" width="356" height="644" frameX="-206" frameY="-1" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua up0007" x="720" y="0" width="352" height="634" frameX="-210" frameY="-9" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua right0000" x="765" y="1227" width="367" height="472" frameX="-254" frameY="-153" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua right0001" x="765" y="1227" width="367" height="472" frameX="-254" frameY="-153" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua right0002" x="388" y="1227" width="377" height="473" frameX="-255" frameY="-152" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua right0003" x="0" y="1227" width="388" height="481" frameX="-254" frameY="-148" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua right0004" x="388" y="1227" width="377" height="473" frameX="-255" frameY="-152" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua left0000" x="0" y="645" width="463" height="582" frameX="-5" frameY="-43" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua left0001" x="752" y="645" width="452" height="573" frameX="-13" frameY="-52" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua left0002" x="752" y="645" width="452" height="573" frameX="-13" frameY="-52" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua left0003" x="752" y="645" width="452" height="573" frameX="-13" frameY="-52" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua left0004" x="0" y="645" width="463" height="582" frameX="-5" frameY="-43" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0000" x="1374" y="0" width="266" height="557" frameX="-219" frameY="-60" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0001" x="1374" y="0" width="266" height="557" frameX="-219" frameY="-60" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0002" x="1374" y="0" width="266" height="557" frameX="-219" frameY="-60" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0003" x="463" y="645" width="289" height="576" frameX="-208" frameY="-40" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0004" x="1072" y="0" width="302" height="597" frameX="-202" frameY="-23" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0005" x="1072" y="0" width="302" height="597" frameX="-202" frameY="-23" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0006" x="1072" y="0" width="302" height="597" frameX="-202" frameY="-23" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0007" x="1072" y="0" width="302" height="597" frameX="-202" frameY="-23" frameWidth="645" frameHeight="645" />
+<SubTexture name="ecua down0008" x="1072" y="0" width="302" height="597" frameX="-202" frameY="-23" frameWidth="645" frameHeight="645" />
+</TextureAtlas>

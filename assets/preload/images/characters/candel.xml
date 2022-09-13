@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="candel.png">
+<SubTexture name="candel idle0000" x="716" y="675" width="351" height="583" frameX="-200" frameY="-100" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0001" x="716" y="675" width="351" height="583" frameX="-200" frameY="-100" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0002" x="0" y="675" width="351" height="593" frameX="-200" frameY="-91" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0003" x="0" y="675" width="351" height="593" frameX="-200" frameY="-91" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0004" x="498" y="0" width="348" height="597" frameX="-202" frameY="-88" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0005" x="498" y="0" width="348" height="597" frameX="-202" frameY="-88" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel idle0006" x="498" y="0" width="348" height="597" frameX="-202" frameY="-88" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0000" x="2207" y="1027" width="524" height="506" frameX="-52" frameY="-128" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0001" x="2207" y="1027" width="524" height="506" frameX="-52" frameY="-128" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0002" x="2207" y="1027" width="524" height="506" frameX="-52" frameY="-128" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0003" x="2207" y="0" width="596" height="519" frameX="-15" frameY="-117" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0004" x="2207" y="519" width="584" height="508" frameX="-32" frameY="-122" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0005" x="2207" y="519" width="584" height="508" frameX="-32" frameY="-122" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0006" x="2207" y="519" width="584" height="508" frameX="-32" frameY="-122" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel left0007" x="2207" y="519" width="584" height="508" frameX="-32" frameY="-122" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0000" x="1304" y="0" width="466" height="581" frameX="-142" frameY="-104" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0001" x="1304" y="0" width="466" height="581" frameX="-142" frameY="-104" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0002" x="0" y="1268" width="581" height="558" frameX="-85" frameY="-126" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0003" x="1160" y="1268" width="581" height="531" frameX="-85" frameY="-155" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0004" x="581" y="1268" width="579" height="542" frameX="-86" frameY="-148" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0005" x="581" y="1268" width="579" height="542" frameX="-86" frameY="-148" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel down0006" x="581" y="1268" width="579" height="542" frameX="-86" frameY="-148" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0000" x="1770" y="576" width="368" height="567" frameX="-337" frameY="-77" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0001" x="1770" y="576" width="368" height="567" frameX="-337" frameY="-77" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0002" x="1304" y="581" width="367" height="577" frameX="-345" frameY="-65" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0003" x="351" y="675" width="365" height="585" frameX="-348" frameY="-61" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0004" x="351" y="675" width="365" height="585" frameX="-348" frameY="-61" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel right0005" x="351" y="675" width="365" height="585" frameX="-348" frameY="-61" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0000" x="1770" y="0" width="437" height="576" frameX="-162" frameY="-121" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0001" x="1770" y="0" width="437" height="576" frameX="-162" frameY="-121" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0002" x="846" y="0" width="458" height="597" frameX="-152" frameY="-89" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0003" x="0" y="0" width="498" height="675" frameX="-131" frameY="-18" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0004" x="0" y="0" width="498" height="675" frameX="-131" frameY="-18" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0005" x="0" y="0" width="498" height="675" frameX="-131" frameY="-18" frameWidth="700" frameHeight="700" />
+<SubTexture name="candel up0006" x="0" y="0" width="498" height="675" frameX="-131" frameY="-18" frameWidth="700" frameHeight="700" />
+</TextureAtlas>

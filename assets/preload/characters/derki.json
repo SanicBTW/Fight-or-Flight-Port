@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 12,
+			"name": "derki idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				210,
+				10
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "derki left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				-21
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "derki down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				6,
+				20
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "derki up",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-130,
+				20
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "derki right",
+			"indices": []
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/derki",
+	"position": [
+		-100,
+		120
+	],
+	"healthicon": "derki",
+	"flip_x": true,
+	"healthbar_colors": [
+		1,
+		115,
+		221
+	],
+	"camera_position": [
+		-110,
+		-60
+	],
+	"sing_duration": 6.1,
+	"scale": 0.9
+}

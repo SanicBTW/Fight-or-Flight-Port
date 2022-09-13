@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="derki.png">
+<SubTexture name="derki idle0000" x="1994" y="1068" width="379" height="523" frameX="-163" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0001" x="1994" y="1068" width="379" height="523" frameX="-163" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0002" x="1994" y="1068" width="379" height="523" frameX="-163" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0003" x="1020" y="663" width="378" height="521" frameX="-164" frameY="-113" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0004" x="1020" y="663" width="378" height="521" frameX="-164" frameY="-113" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0005" x="1020" y="663" width="378" height="521" frameX="-164" frameY="-113" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki idle0006" x="0" y="1799" width="378" height="514" frameX="-164" frameY="-110" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0000" x="1994" y="535" width="480" height="533" frameX="-64" frameY="-135" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0001" x="1994" y="535" width="480" height="533" frameX="-64" frameY="-135" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0002" x="0" y="1250" width="513" height="549" frameX="-36" frameY="-136" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0003" x="0" y="1250" width="513" height="549" frameX="-36" frameY="-136" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0004" x="1994" y="0" width="530" height="535" frameX="-33" frameY="-136" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0005" x="1994" y="0" width="530" height="535" frameX="-33" frameY="-136" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki left0006" x="0" y="1250" width="513" height="549" frameX="-36" frameY="-136" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0000" x="1415" y="556" width="468" height="552" frameX="-144" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0001" x="1415" y="556" width="468" height="552" frameX="-144" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0002" x="1415" y="556" width="468" height="552" frameX="-144" frameY="-112" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0003" x="527" y="663" width="493" height="581" frameX="-150" frameY="-96" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0004" x="527" y="663" width="493" height="581" frameX="-150" frameY="-96" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0005" x="527" y="663" width="493" height="581" frameX="-150" frameY="-96" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0006" x="0" y="663" width="527" height="587" frameX="-154" frameY="-93" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki right0007" x="0" y="663" width="527" height="587" frameX="-154" frameY="-93" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0000" x="1415" y="0" width="579" height="556" frameX="-65" frameY="-133" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0001" x="1415" y="0" width="579" height="556" frameX="-65" frameY="-133" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0002" x="513" y="1250" width="635" height="545" frameX="-36" frameY="-164" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0003" x="1148" y="1250" width="728" height="540" frameX="0" frameY="-184" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0004" x="1148" y="1250" width="728" height="540" frameX="0" frameY="-184" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki down0005" x="1148" y="1250" width="728" height="540" frameX="0" frameY="-184" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0000" x="963" y="0" width="452" height="595" frameX="-124" frameY="-87" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0001" x="963" y="0" width="452" height="595" frameX="-124" frameY="-87" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0002" x="498" y="0" width="465" height="645" frameX="-120" frameY="-47" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0003" x="0" y="0" width="498" height="663" frameX="-103" frameY="-31" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0004" x="0" y="0" width="498" height="663" frameX="-103" frameY="-31" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0005" x="0" y="0" width="498" height="663" frameX="-103" frameY="-31" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0006" x="0" y="0" width="498" height="663" frameX="-103" frameY="-31" frameWidth="700" frameHeight="700" />
+<SubTexture name="derki up0007" x="0" y="0" width="498" height="663" frameX="-103" frameY="-31" frameWidth="700" frameHeight="700" />
+</TextureAtlas>

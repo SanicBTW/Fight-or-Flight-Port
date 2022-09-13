@@ -254,12 +254,17 @@ class PlayState extends MusicBeatState
 
 		switch(SONG.song.toLowerCase())
 		{
-			case "fight or flight" | 'lucha or funa':
+			case "fight or flight":
 				curStage = "starved";
 
 				defaultCamZoom = 0.85;
 				ClientPrefs.middleScroll = true;
 				ClientPrefs.cameraMovOnNoteP = true;
+
+				GameOverSubstate.characterName = "bf-starved-die";
+				GameOverSubstate.deathSoundName = "starved-death";
+				GameOverSubstate.loopSoundName = "starved-loop";
+				GameOverSubstate.endSoundName = "starved-retry";
 
 				cityBG = new FlxSprite(-117, -65, Paths.image('starved/city'));
 				cityBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
@@ -300,23 +305,49 @@ class PlayState extends MusicBeatState
 				lightBG.updateHitbox();
 				lightBG.scrollFactor.set(0.5);
 				add(lightBG);
-		}
+			
+			case "lucha or funa":
+				curStage = "luchafuna";
 
-		var gfVersion:String = SONG.player3;
-		if(gfVersion == null || gfVersion.length < 1) {
-			switch (curStage)
-			{
-				default:
-					gfVersion = 'gf';
-			}
-			SONG.player3 = gfVersion;
+				defaultCamZoom = 0.85;
+				ClientPrefs.middleScroll = true;
+				ClientPrefs.cameraMovOnNoteP = true;
+
+				GameOverSubstate.characterName = "bf-starved-die";
+				GameOverSubstate.deathSoundName = "starved-death";
+				GameOverSubstate.loopSoundName = "starved-loop";
+				GameOverSubstate.endSoundName = "starved-retry";
+
+				fofStage = new FlxSprite(-117, -65, Paths.image('luchafuna/stage'));
+				fofStage.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
+				fofStage.scale.set(1.25, 1.25);
+				fofStage.antialiasing = ClientPrefs.globalAntialiasing;
+				fofStage.updateHitbox();
+				fofStage.scrollFactor.set(0.5);
+				add(fofStage);
+
+				sonicDead = new FlxSprite(325, 250, Paths.image('luchafuna/sonicisfuckingdead'));
+				sonicDead.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
+				sonicDead.scale.set(0.5, 0.5);
+				sonicDead.antialiasing = ClientPrefs.globalAntialiasing;
+				sonicDead.updateHitbox();
+				sonicDead.scrollFactor.set(0.5);
+				add(sonicDead);
+
+				lightBG = new FlxSprite(-117, -65, Paths.image('starved/light'));
+				lightBG.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
+				lightBG.scale.set(1.25, 1.25);
+				lightBG.antialiasing = ClientPrefs.globalAntialiasing;
+				lightBG.updateHitbox();
+				lightBG.scrollFactor.set(0.5);
+				add(lightBG);
 		}
 
 		boyfriendGroup = new FlxTypedGroup<Boyfriend>();
 		dadGroup = new FlxTypedGroup<Character>();
 		gfGroup = new FlxTypedGroup<Character>();
 
-		gf = new Character(GF_X, GF_Y, gfVersion);
+		gf = new Character(GF_X, GF_Y, "gf");
 		gf.x += gf.positionArray[0];
 		gf.y += gf.positionArray[1];
 		gf.scrollFactor.set(0.95, 0.95);
@@ -424,8 +455,7 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		//todo, make a flx sprite group
-		fearBarMain = new FlxSprite(FlxG.width - 100 , FlxG.height * 0.23).loadGraphic(Paths.image("fearbar"));
+		fearBarMain = new FlxSprite(FlxG.width - 100 , FlxG.height * 0.23).loadGraphic(curStage == "starved" ? Paths.image("fearbar") : Paths.image("fearbarfuna"));
 		fearBarMain.scrollFactor.set();
 		fearBarMain.visible = true;
 		add(fearBarMain);
@@ -452,7 +482,7 @@ class PlayState extends MusicBeatState
 		fearBar.updateHitbox();
 		add(fearBar);
 
-		if(SONG.song.toLowerCase() == "lucha or funa")
+		if(curStage == "luchafuna")
 		{
 			subtitles = new Subtitle();
 			subtitles.screenCenter();
@@ -476,7 +506,7 @@ class PlayState extends MusicBeatState
 		startText.cameras = [camHUD];
 		blackFuck.cameras = [camHUD];
 
-		if(SONG.song.toLowerCase() == "lucha or funa")
+		if(curStage == "luchafuna")
 		{
 			subtitles.cameras = [camHUD];
 		}
@@ -490,44 +520,42 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 		updateTime = true;
 
-		if(curStage == "starved") //dumb ass
+		startCountdown();
+		add(blackFuck);
+		startCircle.loadGraphic(Paths.image('Circle-fight-or-flight'));
+		startCircle.screenCenter();
+		startCircle.scale.set(1.5, 1.5);
+		startCircle.x += 777;
+		add(startCircle);
+		startText.loadGraphic(curStage == "starved" ? Paths.image("Text-fight-or-flight") : Paths.image("Text-lucha-or-funa"));
+		startText.screenCenter();
+		startText.scale.set(1.5, 1.5);
+		startText.x -= 1200;
+		add(startText);
+
+		new FlxTimer().start(0.6, function(tmr:FlxTimer)
 		{
-			startCountdown();
-			add(blackFuck);
-			startCircle.loadGraphic(Paths.image('Circle-fight-or-flight'));
-			startCircle.screenCenter();
-			startCircle.scale.set(1.5, 1.5);
-			startCircle.x += 777;
-			add(startCircle);
-			startText.loadGraphic(Paths.image("Text-fight-or-flight"));
-			startText.screenCenter();
-			startText.scale.set(1.5, 1.5);
-			startText.x -= 1200;
-			add(startText);
+			FlxTween.tween(startCircle, {x: 250}, 0.5);
+			FlxTween.tween(startText, {x: 250}, 0.5);
+		});
 
-			new FlxTimer().start(0.6, function(tmr:FlxTimer)
+		new FlxTimer().start(1.9, function(tmr:FlxTimer)
+		{
+			//we tryna clean memory ig
+			FlxTween.tween(startCircle, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
 			{
-				FlxTween.tween(startCircle, {x: 250}, 0.5);
-				FlxTween.tween(startText, {x: 250}, 0.5);
-			});
+				remove(startCircle);
+			}});
+			FlxTween.tween(startText, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+			{
+				remove(startText);
+			}});
+			FlxTween.tween(blackFuck, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
+			{
+				remove(blackFuck);
+			}});
+		});
 
-			new FlxTimer().start(1.9, function(tmr:FlxTimer)
-			{
-				//we tryna clean memory ig
-				FlxTween.tween(startCircle, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
-				{
-					remove(startCircle);
-				}});
-				FlxTween.tween(startText, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
-				{
-					remove(startText);
-				}});
-				FlxTween.tween(blackFuck, {alpha: 0}, 1, {onComplete: function(twn:FlxTween)
-				{
-					remove(blackFuck);
-				}});
-			});
-		}
 		RecalculateRating();
 
 		//precache if vol higher than 0
@@ -2260,287 +2288,334 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if(curStage == "starved")
+		if(curStage == "luchafuna")
 		{
-			if(SONG.song.toLowerCase() == "lucha or funa")
-			{
-				//lyrics oficiales del video: https://www.youtube.com/watch?v=Z1h4DWllk4k
-				switch(curStep)
-				{
-					case 1:
-						subtitles.show();
-						subtitles.changeChar("ecuadorean");
-						subtitles.changeSubtitle("Nya");
-					case 5:
-						subtitles.changeSubtitle("Ecuadorean GOD");
-					case 17:
-						subtitles.changeSubtitle("Nya");
-					case 19:
-						subtitles.changeSubtitle("Nya x2");
-					case 21:
-						subtitles.changeSubtitle("Redbromer ZZZ");
-					case 32:
-						subtitles.changeSubtitle("Nya");
-					case 35:
-						subtitles.hide();
-					case 83:
-						subtitles.show();
-					case 84:
-						subtitles.changeSubtitle("Nya");
-					case 86:
-						subtitles.hide();
-					case 119:
-						subtitles.show();
-					case 120:
-						subtitles.changeSubtitle("Lemon Demon");
-					case 128:
-						subtitles.hide();
-					case 179:
-						subtitles.show();
-					case 180:
-						subtitles.changeSubtitle("Oli amor te amo <3");
-					case 190:
-						subtitles.hide();
-					case 354:
-						subtitles.show();
-					case 355:
-						subtitles.changeSubtitle("Busqueen tweets");
-					case 363:
-						subtitles.changeSubtitle("de este pana y");
-					case 368:
-						subtitles.changeSubtitle("pasenmelos");
-					//dumb ass
-					case 374:
-						subtitles.hide();
-					case 375:
-						subtitles.show();
-					case 376:
-						subtitles.changeSubtitle("Le");
-					case 377:
-						subtitles.changeSubtitle("Le x2");
-					case 379:
-						subtitles.changeSubtitle("Lemon Demon");
-					case 384:
-						subtitles.hide();
-					case 458:
-						subtitles.changeChar("derkerbluer");
-						subtitles.show();
-					case 460:
-						subtitles.changeSubtitle("¿Se acuerdan");
-					case 468:
-						subtitles.changeSubtitle("de ");
-					case 470:
-						subtitles.changeSubtitle("de x2");
-					case 472:
-						subtitles.changeSubtitle("de x3");
-					case 473:
-						subtitles.changeSubtitle("de Ecuadorean?");
-					case 480:
-						subtitles.hide();
-					case 543:
-						subtitles.changeChar("ecuadorean");
-						subtitles.show();
-					case 545:
-						subtitles.changeSubtitle("Pinches idiotas");
-					case 556:
-						subtitles.changeSubtitle("cabron...");
-					case 560:
-						subtitles.hide();
-					case 658:
-						subtitles.changeChar("candel");
-						subtitles.show();
-					case 657:
-						subtitles.changeSubtitle("Yo soy...");
-					case 665:
-						subtitles.changeSubtitle("Candel!");
-					case 672:
-						subtitles.hide();
-					case 873:
-						subtitles.changeChar("ecuadorean");
-						subtitles.show();
-					case 875:
-						subtitles.changeSubtitle("¡Cállate el");
-					case 880:
-						subtitles.changeSubtitle("hocico");
-					case 884:
-						subtitles.changeSubtitle("conchetumadre");
-					case 892:
-						subtitles.changeSubtitle("un rato!");
-					case 895:
-						subtitles.hide();
-					case 978:
-						subtitles.changeChar("donkamaron");
-						subtitles.show();
-					case 980:
-						subtitles.changeSubtitle("En...");
-					case 983:
-						subtitles.changeSubtitle("Don");
-					case 987:
-						subtitles.changeSubtitle("Kamarón");
-					case 993:
-						subtitles.hide();
-					case 1166:
-						subtitles.changeChar("ecuadorean");
-						subtitles.show();
-					case 1168:
-						subtitles.changeSubtitle("Jajaja...");
-					case 1183:
-						subtitles.changeSubtitle("El día de hoy");
-					case 1190:
-						subtitles.changeSubtitle("continuamos con la saga");
-					case 1200:
-						subtitles.changeSubtitle("de videos del Redbromer");
-					case 1210:
-						subtitles.changeSubtitle("Webón");
-					case 1215:
-						subtitles.changeSubtitle("¿Por qué no me encaras a mi?");
-					case 1230:
-						subtitles.changeSubtitle("Nya");
-					case 1240:
-						subtitles.changeSubtitle("Nya x2");
-					case 1244:
-						subtitles.changeSubtitle("Nya x3");
-					case 1247:
-						subtitles.changeChar("redbromer");
-					case 1248:
-						subtitles.changeSubtitle("Es más o menos");
-					case 1255:
-						subtitles.changeSubtitle("como esa polémica");
-					case 1265:
-						subtitles.changeSubtitle("que tuve con el pendejo");
-					case 1280:
-						subtitles.changeSubtitle("que le hace la voz");
-					case 1288:
-						subtitles.changeSubtitle("a Lemon Demon");
-					case 1294:
-						subtitles.changeChar("ecuadorean");
-					case 1295:
-						subtitles.changeSubtitle("Nya");
-					case 1303:
-						subtitles.changeSubtitle("Nya x2");
-					case 1307:
-						subtitles.changeSubtitle("Nya x3");
-					case 1312:
-						subtitles.hide();
-					case 1442:
-						subtitles.show();
-					case 1443:
-						subtitles.changeSubtitle("Pinches idiotas cabrón...");
-					case 1459:
-						subtitles.hide();
-					case 1549:
-						subtitles.show();
-					case 1550:
-						subtitles.changeSubtitle("El pendejo que");
-					case 1558:
-						subtitles.changeSubtitle("le hace la voz");
-					case 1562:
-						subtitles.changeSubtitle("a Lemon Demon...");
-					case 1568:
-						subtitles.hide();
-					case 1711:
-						subtitles.show();
-					case 1712:
-						subtitles.changeSubtitle("Jajaja...");
-					case 1727:
-						subtitles.hide();
-					case 1773:
-						subtitles.show();
-					case 1774:
-						subtitles.changeChar("ecuadorean");
-					case 1775:
-						subtitles.changeSubtitle("Nya");
-					case 1783:
-						subtitles.changeSubtitle("Nya x2");
-					case 1787:
-						subtitles.changeSubtitle("Nya x3");
-					case 1792:
-						subtitles.hide();
-					case 2015:
-						subtitles.show();
-					case 2016:
-						subtitles.changeSubtitle("Nya");
-					case 2018:
-						subtitles.changeSubtitle("Nya x2");
-					case 2021:
-						subtitles.changeSubtitle("Ecuadorean GOD");
-					case 2030:
-						subtitles.changeSubtitle("Nya");
-					case 2033:
-						subtitles.changeSubtitle("Nya x2");
-					case 2036:
-						subtitles.changeSubtitle("RedBromer ZZZ");
-					case 2047:
-						subtitles.changeSubtitle("Nya");
-					case 2048:
-						subtitles.hide();
-					case 2098:
-						subtitles.show();
-					case 2099:
-						subtitles.changeSubtitle("Nya x2");
-					case 2102:
-						subtitles.hide();
-					case 2119:
-						subtitles.show();
-					case 2120:
-						trace("se me escapo un lemon demon por aqui pero na");
-						subtitles.changeChar("sanco");
-						subtitles.changeSubtitle("Gracias por jugar!");
-					case 2140:
-						subtitles.hide();
-				}
-			}
+			//lyrics oficiales del video: https://www.youtube.com/watch?v=Z1h4DWllk4k
 			switch(curStep)
 			{
+				case 1:
+					subtitles.show();
+					subtitles.changeChar("ecuadorean");
+					subtitles.changeSubtitle("Nya");
+				case 5:
+					subtitles.changeSubtitle("Ecuadorean GOD");
+				case 17:
+					subtitles.changeSubtitle("Nya");
+				case 19:
+					subtitles.changeSubtitle("Nya x2");
+				case 21:
+					subtitles.changeSubtitle("Redbromer ZZZ");
+				case 32:
+					subtitles.changeSubtitle("Nya");
+				case 35:
+					subtitles.hide();
+				case 83:
+					subtitles.show();
+				case 84:
+					subtitles.changeSubtitle("Nya");
+				case 86:
+					subtitles.hide();
+				case 119:
+					subtitles.show();
+				case 120:
+					subtitles.changeSubtitle("Lemon Demon");
+				case 128:
+					subtitles.hide();
+				case 179:
+					subtitles.show();
+				case 180:
+					subtitles.changeSubtitle("Oli amor te amo <3");
+				case 190:
+					subtitles.hide();
+				case 354:
+					subtitles.show();
+				case 355:
+					subtitles.changeSubtitle("Busqueen tweets");
+				case 363:
+					subtitles.changeSubtitle("de este pana y");
+				case 368:
+					subtitles.changeSubtitle("pasenmelos");
+				//dumb ass
+				case 374:
+					subtitles.hide();
+				case 375:
+					subtitles.show();
+				case 376:
+					subtitles.changeSubtitle("Le");
+				case 377:
+					subtitles.changeSubtitle("Le x2");
+				case 379:
+					subtitles.changeSubtitle("Lemon Demon");
+				case 384:
+					subtitles.hide();
+				case 458:
+					subtitles.changeChar("derkerbluer");
+					subtitles.show();
+				case 460:
+					subtitles.changeSubtitle("¿Se acuerdan");
+				case 468:
+					subtitles.changeSubtitle("de ");
+				case 470:
+					subtitles.changeSubtitle("de x2");
+				case 472:
+					subtitles.changeSubtitle("de x3");
+				case 473:
+					subtitles.changeSubtitle("de Ecuadorean?");
+				case 480:
+					subtitles.hide();
+				case 543:
+					subtitles.changeChar("ecuadorean");
+					subtitles.show();
+				case 545:
+					subtitles.changeSubtitle("Pinches idiotas");
+				case 556:
+					subtitles.changeSubtitle("cabron...");
+				case 560:
+					subtitles.hide();
+				case 658:
+					subtitles.changeChar("candel");
+					subtitles.show();
+				case 657:
+					subtitles.changeSubtitle("Yo soy...");
+				case 665:
+					subtitles.changeSubtitle("Candel!");
+				case 672:
+					subtitles.hide();
+				case 873:
+					subtitles.changeChar("ecuadorean");
+					subtitles.show();
+				case 875:
+					subtitles.changeSubtitle("¡Cállate el");
+				case 880:
+					subtitles.changeSubtitle("hocico");
+				case 884:
+					subtitles.changeSubtitle("conchetumadre");
+				case 892:
+					subtitles.changeSubtitle("un rato!");
+				case 895:
+					subtitles.hide();
+				case 978:
+					subtitles.changeChar("donkamaron");
+					subtitles.show();
+				case 980:
+					subtitles.changeSubtitle("En...");
+				case 983:
+					subtitles.changeSubtitle("Don");
+				case 987:
+					subtitles.changeSubtitle("Kamarón");
+				case 993:
+					subtitles.hide();
+				case 1166:
+					subtitles.changeChar("ecuadorean");
+					subtitles.show();
+				case 1168:
+					subtitles.changeSubtitle("Jajaja...");
+				case 1183:
+					subtitles.changeSubtitle("El día de hoy");
+				case 1190:
+					subtitles.changeSubtitle("continuamos con la saga");
+				case 1200:
+					subtitles.changeSubtitle("de videos del Redbromer");
+				case 1210:
+					subtitles.changeSubtitle("Webón");
+				case 1215:
+					subtitles.changeSubtitle("¿Por qué no me encaras a mi?");
+				case 1230:
+					subtitles.changeSubtitle("Nya");
+				case 1240:
+					subtitles.changeSubtitle("Nya x2");
+				case 1244:
+					subtitles.changeSubtitle("Nya x3");
+				case 1247:
+					subtitles.changeChar("redbromer");
+				case 1248:
+					subtitles.changeSubtitle("Es más o menos");
+				case 1255:
+					subtitles.changeSubtitle("como esa polémica");
+				case 1265:
+					subtitles.changeSubtitle("que tuve con el pendejo");
+				case 1280:
+					subtitles.changeSubtitle("que le hace la voz");
+				case 1288:
+					subtitles.changeSubtitle("a Lemon Demon");
+				case 1294:
+					subtitles.changeChar("ecuadorean");
+				case 1295:
+					subtitles.changeSubtitle("Nya");
+				case 1303:
+					subtitles.changeSubtitle("Nya x2");
+				case 1307:
+					subtitles.changeSubtitle("Nya x3");
+				case 1312:
+					subtitles.hide();
+				case 1442:
+					subtitles.show();
+				case 1443:
+					subtitles.changeSubtitle("Pinches idiotas cabrón...");
+				case 1459:
+					subtitles.hide();
+				case 1549:
+					subtitles.show();
+				case 1550:
+					subtitles.changeSubtitle("El pendejo que");
+				case 1558:
+					subtitles.changeSubtitle("le hace la voz");
+				case 1562:
+					subtitles.changeSubtitle("a Lemon Demon...");
+				case 1568:
+					subtitles.hide();
+				case 1711:
+					subtitles.show();
+				case 1712:
+					subtitles.changeSubtitle("Jajaja...");
+				case 1727:
+					subtitles.hide();
+				case 1773:
+					subtitles.show();
+				case 1774:
+					subtitles.changeChar("ecuadorean");
+				case 1775:
+					subtitles.changeSubtitle("Nya");
+				case 1783:
+					subtitles.changeSubtitle("Nya x2");
+				case 1787:
+					subtitles.changeSubtitle("Nya x3");
+				case 1792:
+					subtitles.hide();
+				case 2015:
+					subtitles.show();
+				case 2016:
+					subtitles.changeSubtitle("Nya");
+				case 2018:
+					subtitles.changeSubtitle("Nya x2");
+				case 2021:
+					subtitles.changeSubtitle("Ecuadorean GOD");
+				case 2030:
+					subtitles.changeSubtitle("Nya");
+				case 2033:
+					subtitles.changeSubtitle("Nya x2");
+				case 2036:
+					subtitles.changeSubtitle("RedBromer ZZZ");
+				case 2047:
+					subtitles.changeSubtitle("Nya");
+				case 2048:
+					subtitles.hide();
+				case 2098:
+					subtitles.show();
+				case 2099:
+					subtitles.changeSubtitle("Nya");
+				case 2102:
+					subtitles.hide();
+				case 2119:
+					subtitles.show();
+				case 2120:
+					trace("se me escapo un lemon demon por aqui pero na");
+					subtitles.changeChar("sanco");
+					subtitles.changeSubtitle("Gracias por jugar!");
+				case 2140:
+					subtitles.hide();
+
+				//no need to be in order right?
 				case 1182:
-					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
+					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
 					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
-					boyfriend.colorTween = FlxTween.color(boyfriend, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-					dad.colorTween = FlxTween.color(dad, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = true;
 				case 1436:
-					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
+					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
 					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
-					boyfriend.colorTween = FlxTween.color(boyfriend, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-					dad.colorTween = FlxTween.color(dad, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					dad.colorTween = FlxTween.color(dad, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = false;
 				case 1471:
-					FlxTween.color(sonicDead, 1, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
+					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
-					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
-					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
 					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
-					boyfriend.colorTween = FlxTween.color(boyfriend, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-					dad.colorTween = FlxTween.color(dad, 1, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = true;
 				case 1981:
-					FlxTween.color(sonicDead, 1, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
+					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
+					
+					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						boyfriend.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					dad.colorTween = FlxTween.color(dad, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						dad.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					starvedDrop = false;
+			}
+		}
+
+		if(curStage == "starved")
+		{
+			switch(curStep)
+			{
+				case 1182:
+					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
+					
+					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						boyfriend.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						dad.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					starvedDrop = true;
+				case 1436:
+					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
 					FlxTween.tween(towerBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
 					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
-					boyfriend.colorTween = FlxTween.color(boyfriend, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						boyfriend.colorTween = null;
 					}, ease: FlxEase.quadInOut});
-					dad.colorTween = FlxTween.color(dad, 1, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					dad.colorTween = FlxTween.color(dad, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						dad.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					starvedDrop = false;
+				case 1471:
+					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
+					
+					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						boyfriend.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						dad.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					starvedDrop = true;
+				case 1981:
+					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
+					
+					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(towerBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						boyfriend.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					dad.colorTween = FlxTween.color(dad, 0.5, 0xfff96d63, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = false;

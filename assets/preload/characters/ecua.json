@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				9
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "ecua right",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "ecua idle",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				29
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "ecua up",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				3
+			],
+			"anim": "singLEFT",
+			"fps": 12,
+			"name": "ecua left",
+			"indices": []
+		},
+		{
+			"offsets": [
+				0,
+				-2
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "ecua down"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/ecua",
+	"position": [
+		-250,
+		80
+	],
+	"healthicon": "starvedecua",
+	"flip_x": false,
+	"healthbar_colors": [
+		255,
+		36,
+		0
+	],
+	"camera_position": [
+		-120,
+		-140
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}

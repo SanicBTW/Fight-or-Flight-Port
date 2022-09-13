@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 12,
+			"name": "candel idle",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				90,
+				0
+			],
+			"anim": "singLEFT",
+			"fps": 16,
+			"name": "candel left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				-31
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "candel down",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				6,
+				40
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "candel up",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-20,
+				-10
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "candel right",
+			"indices": []
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/candel",
+	"position": [
+		-120,
+		100
+	],
+	"healthicon": "candel",
+	"flip_x": true,
+	"healthbar_colors": [
+		255,
+		0,
+		80
+	],
+	"camera_position": [
+		-150,
+		-60
+	],
+	"sing_duration": 6.1,
+	"scale": 0.9
+}
