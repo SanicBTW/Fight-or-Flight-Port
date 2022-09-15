@@ -9,22 +9,23 @@ import FlxVideo;
 class EXEIntro extends MusicBeatState
 {
     public static var leftState:Bool = false;
-    var vid:FlxVideo;
+    var video:FlxVideo;
 
     override function create()
     {
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);
 
-        vid = new FlxVideo(Paths.video('HaxeFlixelIntro'));
-        vid.finishCallback = () -> skipvideo();
+        video = new FlxVideo(Paths.video('HaxeFlixelIntro'));
+        video.finishCallback = () -> skipvideo();
+
         super.create();
     }
 
     function skipvideo() 
     {
-        vid.kill();
-        vid.destroy();
+        video.kill();
+        video.destroy();
         leftState = true;
         FlxTransitionableState.skipNextTransIn = true;
         FlxTransitionableState.skipNextTransOut = true;

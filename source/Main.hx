@@ -1,5 +1,7 @@
 package;
 
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -76,18 +78,49 @@ class Main extends Sprite
 		addChild(fpsVar);
 		if(fpsVar != null) {
 			fpsVar.visible = ClientPrefs.showFPS;
+			fpsVar.alpha = 0;
 		}
 
 		memoryVar = new MemoryCounter(10, 15);
 		addChild(memoryVar);
 		if(memoryVar != null){
 			memoryVar.visible = ClientPrefs.showMemory;
+			memoryVar.alpha = 0;
 		}
 
 		FlxG.mouse.useSystemCursor = true;
-		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
-		#end
+	}
+
+	//god im so fucking dumb, too lazy to do proper tweens :skull:
+	public static function tweenFPS(show:Bool = true)
+	{
+		if(ClientPrefs.showFPS && fpsVar != null)
+		{
+			if(show)
+			{
+				FlxTween.tween(fpsVar, {alpha: 1}, 1);
+			}
+			else
+			{
+				FlxTween.tween(fpsVar, {alpha: 0}, 1);
+			}
+		}
+	}
+
+	public static function tweenMemory(show:Bool = true)
+	{
+		if(ClientPrefs.showMemory && memoryVar != null)
+		{
+			if(show)
+			{
+				FlxTween.tween(memoryVar, {alpha: 1}, 1);
+			}
+			else
+			{
+				FlxTween.tween(memoryVar, {alpha: 0}, 1);
+			}
+		}
 	}
 }

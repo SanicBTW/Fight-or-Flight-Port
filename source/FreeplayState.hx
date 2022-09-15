@@ -139,7 +139,6 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 
-		//bro add functions on other buttons or smth
 		#if android
 		addVirtualPad(LEFT_RIGHT, A_B);
 		#end

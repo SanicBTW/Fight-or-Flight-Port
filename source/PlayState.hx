@@ -200,6 +200,11 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		if(Main.fpsVar.alpha == 0)
+			Main.tweenFPS();
+		if(Main.memoryVar.alpha == 0)
+			Main.tweenMemory();
+
 		PauseSubState.songName = null; //Reset to default
 
 		if (FlxG.sound.music != null)
@@ -356,11 +361,30 @@ class PlayState extends MusicBeatState
 		gf.scrollFactor.set(0.95, 0.95);
 		gfGroup.add(gf);
 
-		dad = new Character(DAD_X, DAD_Y, SONG.player2);
-		dadGroup.add(dad);
-
-		boyfriend = new Boyfriend(BF_X, BF_Y, SONG.player1);
-		boyfriendGroup.add(boyfriend);
+		if(curStage == "starved")
+		{
+			dad = new Character(0, 0, SONG.player2);
+			dad.screenCenter();
+			dad.x += 300;
+			dad.y += 110;
+			dadGroup.add(dad);
+	
+			boyfriend = new Boyfriend(0, 400, SONG.player1);
+			boyfriend.screenCenter(X);
+			boyfriendGroup.add(boyfriend);
+		}
+		else if(curStage == "luchafuna")
+		{
+			dad = new Character(0, 0, SONG.player2);
+			dad.screenCenter();
+			dad.x += 250;
+			dad.y += 110;
+			dadGroup.add(dad);
+	
+			boyfriend = new Boyfriend(0, 400, SONG.player1);
+			boyfriend.screenCenter(X);
+			boyfriendGroup.add(boyfriend);
+		}
 
 		add(dadGroup);
 		add(boyfriendGroup);
@@ -1028,6 +1052,18 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		if(!paused)
+		{
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+			if(FlxG.sound.music != null) {
+				FlxG.sound.music.pause();
+				vocals.pause();
+			}
+			openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+		}
+
 		super.onFocusLost();
 	}
 
@@ -1160,7 +1196,6 @@ class PlayState extends MusicBeatState
 		if (controls.RESET && !inCutscene && !endingSong)
 		{
 			starvedFear = 100;
-			trace("RESET = True");
 		}
 
 		var roundedSpeed:Float = FlxMath.roundDecimal(SONG.speed, 2);
@@ -1353,12 +1388,15 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-
 	public var isDead:Bool = false;
 	function doDeathCheck(?skipFearCheck:Bool = false)
 	{
 		if((skipFearCheck || Math.round(starvedFear) == 100) && !practiceMode && !isDead) 
 		{
+			Main.tweenFPS(false);
+			Main.tweenMemory(false);
+			//does this even do something
+			addCharacterToList('bf-starved-die', 0);
 			boyfriend.stunned = true;
 			deathCounter++;
 
@@ -2412,7 +2450,17 @@ class PlayState extends MusicBeatState
 					subtitles.show();
 				case 1168:
 					subtitles.changeSubtitle("Jajaja...");
-				case 1183:
+				case 1183: //mf was saying case unused
+					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
+					
+					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
+					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						boyfriend.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
+						dad.colorTween = null;
+					}, ease: FlxEase.quadInOut});
+					starvedDrop = true;
 					subtitles.changeSubtitle("El día de hoy");
 				case 1190:
 					subtitles.changeSubtitle("continuamos con la saga");
@@ -2518,18 +2566,7 @@ class PlayState extends MusicBeatState
 					subtitles.hide();
 
 				//no need to be in order right?
-				case 1182:
-					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
-					
-					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
-					boyfriend.colorTween = FlxTween.color(boyfriend, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
-						boyfriend.colorTween = null;
-					}, ease: FlxEase.quadInOut});
-					dad.colorTween = FlxTween.color(dad, 0.5, FlxColor.WHITE, 0xfff96d63, {onComplete: function(twn:FlxTween) {
-						dad.colorTween = null;
-					}, ease: FlxEase.quadInOut});
-					starvedDrop = true;
-				case 1436:
+				case 1437:
 					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
@@ -2540,7 +2577,7 @@ class PlayState extends MusicBeatState
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = false;
-				case 1471:
+				case 1472:
 					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(fofStage, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
@@ -2551,7 +2588,7 @@ class PlayState extends MusicBeatState
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = true;
-				case 1981:
+				case 1982:
 					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(fofStage, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
@@ -2569,7 +2606,7 @@ class PlayState extends MusicBeatState
 		{
 			switch(curStep)
 			{
-				case 1182:
+				case 1183:
 					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
@@ -2582,7 +2619,7 @@ class PlayState extends MusicBeatState
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = true;
-				case 1436:
+				case 1437:
 					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});
@@ -2595,7 +2632,7 @@ class PlayState extends MusicBeatState
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = false;
-				case 1471:
+				case 1472:
 					FlxTween.color(sonicDead, 0.5, FlxColor.WHITE, 0xfff96d63, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 0}, 0.5, {ease: FlxEase.quadInOut});
@@ -2608,7 +2645,7 @@ class PlayState extends MusicBeatState
 						dad.colorTween = null;
 					}, ease: FlxEase.quadInOut});
 					starvedDrop = true;
-				case 1981:
+				case 1982:
 					FlxTween.color(sonicDead, 0.5, 0xfff96d63, FlxColor.WHITE, {ease: FlxEase.quadInOut});
 					
 					FlxTween.tween(cityBG, {alpha: 1}, 0.5, {ease: FlxEase.quadInOut});

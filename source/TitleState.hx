@@ -52,6 +52,10 @@ class TitleState extends MusicBeatState
 
 		PlayerSettings.init();
 
+		//funkiest shit ive ever seen
+		Main.tweenFPS();
+		Main.tweenMemory();
+
 		super.create();
 
 		FlxG.save.bind('funkin', 'ninjamuffin99');
@@ -79,6 +83,7 @@ class TitleState extends MusicBeatState
 		}
 		else
 		{
+			//i have to look into this
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				FlxG.sound.play(Paths.sound('titleLaugh'), 1, false, null, false, function()

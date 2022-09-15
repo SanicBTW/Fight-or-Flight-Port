@@ -54,6 +54,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
 		add(camFollowPos);
 
+		//no cam speed shit, gotta snap lol
+		//just tested it, easiest fix of my fucking life
+		snap(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y);
+
 		#if android
 		addVirtualPad(NONE, A_B);
 		addPadCamera();
@@ -64,13 +68,17 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if(updateCamera) {
+		if(updateCamera) 
+		{
 			var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 		}
 
 		if (controls.ACCEPT)
 		{
+			//uh idk if its like this
+			FlxG.camera.flash(FlxColor.RED, 3, null, true);
+			bf.visible = false;
 			#if android
 			removeVirtualPad();
 			#end
@@ -140,5 +148,11 @@ class GameOverSubstate extends MusicBeatSubstate
 				});
 			});
 		}
+	}
+
+	function snap(x, y)
+	{
+		camFollow.set(x, y);
+		camFollowPos.setPosition(x, y);
 	}
 }

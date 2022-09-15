@@ -854,7 +854,11 @@ class PreferencesSubstate extends MusicBeatSubstate
 					case 'FPS Counter':
 						ClientPrefs.showFPS = !ClientPrefs.showFPS;
 						if(Main.fpsVar != null)
+						{
 							Main.fpsVar.visible = ClientPrefs.showFPS;
+							if(Main.fpsVar.alpha == 0)
+								Main.tweenFPS();
+						}
 
 					case 'Low Quality':
 						ClientPrefs.lowQuality = !ClientPrefs.lowQuality;
@@ -899,17 +903,17 @@ class PreferencesSubstate extends MusicBeatSubstate
 					case 'Hide HUD':
 						ClientPrefs.hideHud = !ClientPrefs.hideHud;
 
-					case 'Persistent Cached Data':
-						ClientPrefs.imagesPersist = !ClientPrefs.imagesPersist;
-						FlxGraphic.defaultPersist = ClientPrefs.imagesPersist;
-
 					case 'Hide Song Length':
 						ClientPrefs.hideTime = !ClientPrefs.hideTime;
 
 					case 'Memory Counter':
 						ClientPrefs.showMemory = !ClientPrefs.showMemory;
 						if(Main.memoryVar != null)
+						{
 							Main.memoryVar.visible = ClientPrefs.showMemory;
+							if(Main.memoryVar.alpha == 0)
+								Main.tweenMemory();
+						}
 
 					case 'Score Text Zoom on Hit':
 						ClientPrefs.optScoreZoom = !ClientPrefs.optScoreZoom;
