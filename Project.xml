@@ -44,9 +44,13 @@
 		<library name="songs"         preload="false" />
 		<library name="shared"        preload="false" />
 	</section>
+
+	<library name="videos"        preload="true" />
 	
 	<assets path="assets/songs"         library="songs"         exclude="*.mp3"/>
 	<assets path="assets/shared"        library="shared"        exclude="*.mp3"/>
+	<assets path="assets/videos"        library="videos"/>
+
 	<assets path="assets/android" if="android"/>
 
 	<assets path="assets/fonts" embed='true'/>

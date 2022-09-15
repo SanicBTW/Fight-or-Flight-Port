@@ -59,8 +59,8 @@
 	"no_antialiasing": false,
 	"image": "characters/derki",
 	"position": [
-		-100,
-		120
+		-150,
+		150
 	],
 	"healthicon": "derki",
 	"flip_x": true,
@@ -70,8 +70,8 @@
 		221
 	],
 	"camera_position": [
-		-110,
-		-60
+		-250,
+		-140
 	],
 	"sing_duration": 6.1,
 	"scale": 0.9

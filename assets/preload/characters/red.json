@@ -59,8 +59,8 @@
 	"no_antialiasing": false,
 	"image": "characters/red",
 	"position": [
-		-80,
-		60
+		-150,
+		150
 	],
 	"healthicon": "red",
 	"flip_x": true,
@@ -70,8 +70,8 @@
 		0
 	],
 	"camera_position": [
-		-270,
-		-130
+		-250,
+		-140
 	],
 	"sing_duration": 6.1,
 	"scale": 1.4

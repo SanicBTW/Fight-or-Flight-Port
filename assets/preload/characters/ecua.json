@@ -59,8 +59,8 @@
 	"no_antialiasing": false,
 	"image": "characters/ecua",
 	"position": [
-		-250,
-		80
+		0,
+		190
 	],
 	"healthicon": "starvedecua",
 	"flip_x": false,
@@ -70,8 +70,8 @@
 		0
 	],
 	"camera_position": [
-		-120,
-		-140
+		-300,
+		100
 	],
 	"sing_duration": 6.1,
 	"scale": 1

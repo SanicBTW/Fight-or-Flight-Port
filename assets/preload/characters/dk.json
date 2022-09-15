@@ -59,8 +59,8 @@
 	"no_antialiasing": false,
 	"image": "characters/dk",
 	"position": [
-		-120,
-		30
+		-150,
+		150
 	],
 	"healthicon": "face",
 	"flip_x": true,
@@ -70,8 +70,8 @@
 		81
 	],
 	"camera_position": [
-		-140,
-		0
+		-250,
+		-140
 	],
 	"sing_duration": 6.1,
 	"scale": 1

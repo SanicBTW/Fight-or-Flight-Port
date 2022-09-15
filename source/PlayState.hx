@@ -261,6 +261,9 @@ class PlayState extends MusicBeatState
 				ClientPrefs.middleScroll = true;
 				ClientPrefs.cameraMovOnNoteP = true;
 
+				DAD_X = 550;
+				DAD_Y = 360;
+
 				GameOverSubstate.characterName = "bf-starved-die";
 				GameOverSubstate.deathSoundName = "starved-death";
 				GameOverSubstate.loopSoundName = "starved-loop";
@@ -326,7 +329,7 @@ class PlayState extends MusicBeatState
 				fofStage.scrollFactor.set(0.5);
 				add(fofStage);
 
-				sonicDead = new FlxSprite(325, 250, Paths.image('luchafuna/sonicisfuckingdead'));
+				sonicDead = new FlxSprite(310, 250, Paths.image('luchafuna/sonicisfuckingdead'));
 				sonicDead.setGraphicSize(Std.int(FlxG.width), Std.int(FlxG.height));
 				sonicDead.scale.set(0.5, 0.5);
 				sonicDead.antialiasing = ClientPrefs.globalAntialiasing;
@@ -353,16 +356,12 @@ class PlayState extends MusicBeatState
 		gf.scrollFactor.set(0.95, 0.95);
 		gfGroup.add(gf);
 
-		dad = new Character(0, 0, SONG.player2);
-		dad.screenCenter();
-		dad.x += 300;
-		dad.y += 110;
+		dad = new Character(DAD_X, DAD_Y, SONG.player2);
 		dadGroup.add(dad);
 
-		boyfriend = new Boyfriend(0, 400, SONG.player1);
-		boyfriend.screenCenter(X);
+		boyfriend = new Boyfriend(BF_X, BF_Y, SONG.player1);
 		boyfriendGroup.add(boyfriend);
-		
+
 		add(dadGroup);
 		add(boyfriendGroup);
 
@@ -1556,13 +1555,13 @@ class PlayState extends MusicBeatState
 
 	public function moveCamera(isDad:Bool) {
 		if(isDad) {
-			/*
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0];
-			camFollow.y += dad.cameraPosition[1];*/
+			camFollow.y += dad.cameraPosition[1];
+			/*
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0];
-			camFollow.y += boyfriend.cameraPosition[1];
+			camFollow.y += boyfriend.cameraPosition[1];*/
 		} else {
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0];
@@ -2348,7 +2347,10 @@ class PlayState extends MusicBeatState
 					subtitles.changeSubtitle("Lemon Demon");
 				case 384:
 					subtitles.hide();
+				case 450:
+					addCharacterToList("derki", 0);
 				case 458:
+					changeChar(0, "derki");
 					subtitles.changeChar("derkerbluer");
 					subtitles.show();
 				case 460:
@@ -2745,6 +2747,44 @@ class PlayState extends MusicBeatState
 				{
 					camFollow.x = campointX + mult;
 					camFollow.y = campointY;
+				}
+		}
+	}
+
+	function changeChar(charType = 0, character:String)
+	{
+		var value2 = character; //mf im lazy
+		switch(charType) 
+		{
+			case 0:
+				if(boyfriend.curCharacter != value2) 
+				{
+					if(!boyfriendMap.exists(value2)) 
+					{
+						addCharacterToList(value2, charType);
+					}
+					boyfriend.visible = false;
+					boyfriend = boyfriendMap.get(value2);
+					boyfriend.visible = true;
+				}
+			case 1:
+				if(dad.curCharacter != value2) 
+				{
+					if(!dadMap.exists(value2)) 
+					{
+						addCharacterToList(value2, charType);
+					}
+					var wasGf:Bool = dad.curCharacter.startsWith('gf');
+					dad.visible = false;
+					dad = dadMap.get(value2);
+					if(!dad.curCharacter.startsWith('gf')) {
+						if(wasGf) {
+							gf.visible = true;
+						}
+					} else {
+						gf.visible = false;
+					}
+					dad.visible = true;
 				}
 		}
 	}
