@@ -77,10 +77,10 @@ class PlayState extends MusicBeatState
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
 	#end
 
-	public var BF_X:Float = 770;
-	public var BF_Y:Float = 100;
-	public var DAD_X:Float = 100;
-	public var DAD_Y:Float = 100;
+	public var BF_X:Float = 366.5;
+	public var BF_Y:Float = 400;
+	public var DAD_X:Float = 672.5;
+	public var DAD_Y:Float = 171.3; //shit was printing a bunch of numbers, 171.3349514563107
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
 
@@ -251,7 +251,7 @@ class PlayState extends MusicBeatState
 		detailsPausedText = "Paused - " + detailsText;
 		#end
 
-		blackFuck = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+		blackFuck = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		startCircle = new FlxSprite();
 		startText = new FlxSprite();
 
@@ -265,9 +265,6 @@ class PlayState extends MusicBeatState
 				defaultCamZoom = 0.85;
 				ClientPrefs.middleScroll = true;
 				ClientPrefs.cameraMovOnNoteP = true;
-
-				DAD_X = 550;
-				DAD_Y = 360;
 
 				GameOverSubstate.characterName = "bf-starved-die";
 				GameOverSubstate.deathSoundName = "starved-death";
@@ -321,6 +318,11 @@ class PlayState extends MusicBeatState
 				ClientPrefs.middleScroll = true;
 				ClientPrefs.cameraMovOnNoteP = true;
 
+				/*
+				BF_X += 150;
+				DAD_X -= 225;
+				DAD_Y -= 100;*/
+
 				GameOverSubstate.characterName = "bf-starved-die";
 				GameOverSubstate.deathSoundName = "starved-death";
 				GameOverSubstate.loopSoundName = "starved-loop";
@@ -361,30 +363,11 @@ class PlayState extends MusicBeatState
 		gf.scrollFactor.set(0.95, 0.95);
 		gfGroup.add(gf);
 
-		if(curStage == "starved")
-		{
-			dad = new Character(0, 0, SONG.player2);
-			dad.screenCenter();
-			dad.x += 300;
-			dad.y += 110;
-			dadGroup.add(dad);
-	
-			boyfriend = new Boyfriend(0, 400, SONG.player1);
-			boyfriend.screenCenter(X);
-			boyfriendGroup.add(boyfriend);
-		}
-		else if(curStage == "luchafuna")
-		{
-			dad = new Character(0, 0, SONG.player2);
-			dad.screenCenter();
-			dad.x += 250;
-			dad.y += 110;
-			dadGroup.add(dad);
-	
-			boyfriend = new Boyfriend(0, 400, SONG.player1);
-			boyfriend.screenCenter(X);
-			boyfriendGroup.add(boyfriend);
-		}
+		dad = new Character(DAD_X, DAD_Y, SONG.player2);
+		dadGroup.add(dad);
+
+		boyfriend = new Boyfriend(BF_X, BF_Y, SONG.player1);
+		boyfriendGroup.add(boyfriend);
 
 		add(dadGroup);
 		add(boyfriendGroup);
@@ -552,7 +535,10 @@ class PlayState extends MusicBeatState
 		add(startCircle);
 		startText.loadGraphic(curStage == "starved" ? Paths.image("Text-fight-or-flight") : Paths.image("Text-lucha-or-funa"));
 		startText.screenCenter();
-		startText.scale.set(1.5, 1.5);
+		if(curStage == "starved")
+		{
+			startText.scale.set(1.5, 1.5);
+		}
 		startText.x -= 1200;
 		add(startText);
 
@@ -616,6 +602,7 @@ class PlayState extends MusicBeatState
 		beatHit(); //lmfao easiest fix of my life
 	}
 
+	//to do, fix coords of the new char
 	public function addCharacterToList(newCharacter:String, type:Int) {
 		switch(type) {
 			case 0:
@@ -1395,8 +1382,6 @@ class PlayState extends MusicBeatState
 		{
 			Main.tweenFPS(false);
 			Main.tweenMemory(false);
-			//does this even do something
-			addCharacterToList('bf-starved-die', 0);
 			boyfriend.stunned = true;
 			deathCounter++;
 
@@ -1570,7 +1555,7 @@ class PlayState extends MusicBeatState
 			defaultCamZoom = 1;
 			for(i in 0...playerStrums.length)
 			{
-				FlxTween.tween(playerStrums.members[i], {alpha: 0.5}, 0.1, { ease: FlxEase.linear});
+				FlxTween.tween(playerStrums.members[i], {alpha: 0.25}, 0.1, { ease: FlxEase.linear});
 			}
 			campointX = camFollow.x;
 			campointY = camFollow.y;
@@ -1593,13 +1578,9 @@ class PlayState extends MusicBeatState
 
 	public function moveCamera(isDad:Bool) {
 		if(isDad) {
-			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.cameraPosition[0];
-			camFollow.y += dad.cameraPosition[1];
-			/*
-			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 175);
 			camFollow.x -= boyfriend.cameraPosition[0];
-			camFollow.y += boyfriend.cameraPosition[1];*/
+			camFollow.y += boyfriend.cameraPosition[1];
 		} else {
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0];
@@ -2101,7 +2082,7 @@ class PlayState extends MusicBeatState
 					var char:Character = boyfriend;
 					if(daNote.gfNote) { char = gf; }
 
-					if(char != null)
+					if(char != null && curStage != "luchafuna")
 					{
 						var daAlt = '';
 						if(daNote.noteType == "Alt Animation") daAlt = '-alt';
@@ -2132,7 +2113,7 @@ class PlayState extends MusicBeatState
 
 			var char:Character = boyfriend;
 
-			if(char != null)
+			if(char != null && curStage != "luchafuna")
 			{
 				char.playAnim(singAnims[direction] + "miss", true);
 			}
@@ -2152,9 +2133,6 @@ class PlayState extends MusicBeatState
 			if (ClientPrefs.hitsoundVolume > 0 && !note.hitsoundDisabled)
 			{
 				FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
-			}
-
-			switch(note.noteType) {
 			}
 
 			if (!note.isSustainNote)
@@ -2412,7 +2390,10 @@ class PlayState extends MusicBeatState
 					subtitles.changeSubtitle("cabron...");
 				case 560:
 					subtitles.hide();
+				case 650:
+					addCharacterToList("candel", 0);
 				case 658:
+					changeChar(0, "candel");
 					subtitles.changeChar("candel");
 					subtitles.show();
 				case 657:
@@ -2434,7 +2415,10 @@ class PlayState extends MusicBeatState
 					subtitles.changeSubtitle("un rato!");
 				case 895:
 					subtitles.hide();
+				case 970:
+					addCharacterToList("dk", 0);
 				case 978:
+					changeChar(0, "dk");
 					subtitles.changeChar("donkamaron");
 					subtitles.show();
 				case 980:
@@ -2476,7 +2460,9 @@ class PlayState extends MusicBeatState
 					subtitles.changeSubtitle("Nya x2");
 				case 1244:
 					subtitles.changeSubtitle("Nya x3");
+					addCharacterToList("red", 0);
 				case 1247:
+					changeChar(0, "red");
 					subtitles.changeChar("redbromer");
 				case 1248:
 					subtitles.changeSubtitle("Es más o menos");
