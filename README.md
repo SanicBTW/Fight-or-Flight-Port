@@ -4,7 +4,7 @@ This port is using [FNF-PE-0.3.2h](https://github.com/SanicBTW/FNF-PE-0.3.2h)
 
 Some other code is based off my [Fight or flight](https://github.com/SanicBTW/Fight-Or-Flight-Fanmade-SC) WIP port
 
-ETA: In 2/3 weeks depending the time I spend making these updates
+ETA: ?????
 
 Current changes for the last update (forgot to update changelog sorry, i will just get rid of it instead)
 
